@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Workshop AI — proposal for Rice Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#FAF7F2;--paper-2:#F3EDE3;--paper-warm:#F0E9DC;
+    --ink:#1F1B16;--ink-soft:#5A5249;--ink-faint:#8A8077;
+    --accent:#E0531F;--accent-deep:#B23F13;--accent-soft:#E8C4B3;
+    --steel:#2D4A5C;--olive:#7A8050;--muted:#D8D0C4;
+    --line:rgba(31,27,22,0.12);--line-soft:#E8E0D0;--highlight:#FBEED6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:"Instrument Sans",sans-serif;font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  .page{max-width:880px;margin:0 auto;padding:0 40px}
+  h1,h2,h3{font-family:"Fraunces",serif;font-weight:500;line-height:1.1;letter-spacing:-0.01em}
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent-deep)}
+
+  /* Cover */
+  .cover{padding:88px 0 56px;border-bottom:1px solid var(--line)}
+  .cover .eyebrow{opacity:0;animation:rise .7s ease forwards}
+  .cover h1{font-size:clamp(38px,6vw,64px);font-weight:600;margin:22px 0 24px;max-width:17ch;opacity:0;animation:rise .7s ease .08s forwards}
+  .cover h1 em{font-style:italic;color:var(--accent-deep);font-weight:400}
+  .cover .lede{font-family:"Fraunces",serif;font-size:clamp(19px,2.2vw,23px);color:var(--ink-soft);max-width:60ch;opacity:0;animation:rise .7s ease .16s forwards}
+  .cover-meta{margin-top:40px;display:flex;gap:48px;flex-wrap:wrap;font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:0.06em;color:var(--ink-faint);opacity:0;animation:rise .7s ease .24s forwards}
+  .cover-meta div{display:flex;flex-direction:column;gap:5px}
+  .cover-meta strong{color:var(--ink);font-weight:500}
+
+  section{padding:60px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:clamp(26px,3.2vw,36px);margin-bottom:18px;max-width:24ch}
+  h2 .num{display:block;font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:500;color:var(--accent);letter-spacing:0.1em;margin-bottom:10px;text-transform:uppercase}
+  .intro{font-size:18px;color:var(--ink-soft);max-width:64ch;margin-bottom:8px}
+  .intro + .intro{margin-top:14px}
+
+  /* Diagram frame */
+  .dia{margin:36px 0 8px;padding:32px 28px;background:var(--paper-warm);border:1px solid var(--line-soft);border-radius:4px}
+  .dia svg{width:100%;height:auto;display:block;max-width:760px;margin:0 auto}
+  .dia-cap{text-align:center;margin-top:18px;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-faint);letter-spacing:0.08em;text-transform:uppercase}
+
+  /* Scene / pull */
+  .scene{display:grid;grid-template-columns:1fr;gap:0;background:var(--paper-2);border-left:3px solid var(--accent);padding:28px 32px;margin:32px 0;border-radius:2px}
+  .scene .scene-label{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent-deep);margin-bottom:12px;font-weight:500}
+  .scene p{font-family:"Fraunces",serif;font-size:18px;line-height:1.5;color:var(--ink);max-width:none}
+  .scene p + p{margin-top:10px}
+
+  /* Levels ladder */
+  .ladder{position:relative;margin-top:36px}
+  .ladder::before{content:"";position:absolute;top:34px;bottom:34px;left:23px;width:2px;background:var(--line)}
+  @media(min-width:720px){.ladder::before{left:31px}}
+  .level{position:relative;display:grid;grid-template-columns:48px 1fr;gap:20px;padding:22px 0}
+  @media(min-width:720px){.level{grid-template-columns:64px 1fr;gap:28px}}
+  .level + .level{border-top:1px solid var(--line)}
+  .node{position:relative;z-index:1;width:48px;height:48px;border-radius:50%;background:var(--paper);border:2px solid var(--steel);display:flex;align-items:center;justify-content:center;font-family:"Fraunces",serif;font-weight:600;font-size:17px;color:var(--steel)}
+  @media(min-width:720px){.node{width:64px;height:64px;font-size:20px}}
+  .level.key .node{border-color:var(--accent);color:var(--accent-deep)}
+  .level.you .node{background:var(--steel);color:var(--paper);border-color:var(--steel)}
+  .head-row{display:flex;align-items:baseline;flex-wrap:wrap;gap:12px;margin-bottom:8px}
+  .level h3{font-size:clamp(21px,2.4vw,26px);font-weight:600}
+  .tag{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:4px 9px;color:var(--steel);border:1px solid var(--muted);border-radius:2px}
+  .level.key .tag{color:var(--accent-deep);border-color:var(--accent);background:rgba(224,83,31,0.06)}
+  .tag.here{color:var(--paper);background:var(--steel);border-color:var(--steel)}
+  .level p.ll{font-size:16px;color:var(--ink-soft);max-width:60ch}
+
+  /* Three-col */
+  .three{display:grid;grid-template-columns:1fr;gap:28px;margin-top:32px}
+  @media(min-width:760px){.three{grid-template-columns:repeat(3,1fr);gap:32px}}
+  .three .bar{width:34px;height:3px;background:var(--accent);margin-bottom:14px}
+  .three h3{font-size:18px;font-weight:600;margin-bottom:8px}
+  .three p{font-size:15px;color:var(--ink-soft)}
+
+  /* Gate (four questions) */
+  .gate{display:grid;grid-template-columns:1fr;gap:14px;margin-top:32px}
+  @media(min-width:680px){.gate{grid-template-columns:repeat(2,1fr);gap:16px}}
+  .q{background:var(--paper);border:1px solid var(--line-soft);border-radius:4px;padding:20px 22px;display:grid;grid-template-columns:30px 1fr;gap:14px;align-items:start}
+  .q .qn{font-family:"Fraunces",serif;font-size:20px;font-weight:600;color:var(--accent)}
+  .q h4{font-family:"Fraunces",serif;font-size:17px;font-weight:600;margin-bottom:3px}
+  .q p{font-size:14.5px;color:var(--ink-soft);margin:0}
+  .gate-note{margin-top:18px;font-size:15px;color:var(--ink-soft);font-style:italic;max-width:64ch}
+
+  /* Scope */
+  .scope{display:grid;grid-template-columns:1fr;gap:28px;margin-top:28px}
+  @media(min-width:680px){.scope{grid-template-columns:1fr 1fr;gap:32px}}
+  .scope-col h4{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;font-weight:500}
+  .scope-col.in h4{color:var(--olive)}
+  .scope-col.out h4{color:var(--ink-faint)}
+  .scope-col ul{list-style:none}
+  .scope-col li{padding:9px 0 9px 22px;font-size:15px;color:var(--ink-soft);border-top:1px solid var(--line-soft);position:relative;line-height:1.5}
+  .scope-col li:last-child{border-bottom:1px solid var(--line-soft)}
+  .scope-col.in li::before{content:"+";position:absolute;left:0;color:var(--olive);font-weight:600}
+  .scope-col.out li::before{content:"\2013";position:absolute;left:0;color:var(--ink-faint)}
+
+  /* Investment */
+  .invest{background:var(--ink);color:var(--paper);padding:40px 44px;border-radius:4px;margin:32px 0}
+  .invest-row{display:grid;grid-template-columns:1fr;gap:28px}
+  @media(min-width:640px){.invest-row{grid-template-columns:1fr 1fr;gap:40px}}
+  .invest-block .invest-label{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent-soft);margin-bottom:12px}
+  .invest-amount{font-family:"Fraunces",serif;font-size:46px;font-weight:500;line-height:1;letter-spacing:-0.02em;margin-bottom:8px}
+  .invest-amount span{font-size:18px;color:var(--accent-soft)}
+  .invest-detail{font-size:14px;color:var(--paper-2);opacity:0.85;max-width:34ch}
+  .invest-divide{height:1px;background:rgba(250,247,242,0.16);margin:4px 0}
+  @media(min-width:640px){.invest-divide{width:1px;height:auto;margin:0}}
+
+  .callout{background:var(--highlight);padding:20px 24px;border-radius:4px;margin:24px 0;border-left:3px solid var(--accent)}
+  .callout p{margin:0;font-size:15px;color:var(--ink-soft);line-height:1.55}
+  .callout strong{color:var(--ink)}
+
+  .epilogue p{font-family:"Fraunces",serif;font-size:17px;line-height:1.55;color:var(--ink-soft);font-style:italic;max-width:62ch;margin-bottom:16px}
+  .signoff{margin-top:40px;font-family:"Fraunces",serif;font-size:16px;color:var(--ink-soft)}
+  .signoff strong{display:block;color:var(--ink);font-weight:600;margin-top:4px}
+  footer{padding:48px 0 64px}
+  footer p{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:0.06em;color:var(--ink-faint)}
+
+  .reveal{opacity:0;transform:translateY(16px)}
+
+  /* Path card stepper */
+  .pathcard{margin-top:32px;background:var(--paper-warm);border:1px solid var(--line-soft);border-radius:6px;overflow:hidden}
+  .pc-progress{display:flex;gap:6px;padding:18px 24px 0}
+  .pc-seg{flex:1;height:4px;border-radius:2px;background:var(--muted);cursor:pointer;transition:background .3s ease}
+  .pc-seg.done{background:var(--accent-soft)}
+  .pc-seg.active{background:var(--accent)}
+  .pc-body{display:grid;grid-template-columns:1fr;gap:28px;padding:26px 24px 28px}
+  @media(min-width:820px){.pc-body{grid-template-columns:1fr 372px;gap:40px;align-items:center}}
+  .pc-text{min-height:300px}
+  @media(min-width:820px){.pc-text{height:300px;min-height:0}}
+  .pc-stepno{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:0.12em;color:var(--ink-faint);text-transform:uppercase;margin-bottom:12px}
+  .pc-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:12px;margin-bottom:12px}
+  .pc-head h3{font-family:"Fraunces",serif;font-size:clamp(24px,3vw,32px);font-weight:600;line-height:1.05}
+  .pc-tag{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:4px 9px;color:var(--steel);border:1px solid var(--muted);border-radius:2px}
+  .pc-tag.key{color:var(--accent-deep);border-color:var(--accent);background:rgba(224,83,31,0.06)}
+  .pc-tag.here{color:var(--paper);background:var(--steel);border-color:var(--steel)}
+  .pc-lead{font-size:17px;color:var(--ink);margin-bottom:12px;max-width:50ch}
+  .pc-role{font-family:"Fraunces",serif;font-size:15.5px;font-style:italic;color:var(--steel);padding-left:14px;border-left:2px solid var(--muted);max-width:50ch}
+  .pc-role.key{color:var(--accent-deep);border-left-color:var(--accent)}
+  .pc-dia{background:var(--paper);border:1px solid var(--line-soft);border-radius:4px;padding:18px 14px}
+  .pc-dia svg{width:100%;height:auto;display:block}
+  .pc-cap{text-align:center;margin-top:10px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ink-faint);letter-spacing:0.06em;text-transform:uppercase}
+  .pc-nav{display:flex;align-items:center;justify-content:space-between;padding:0 24px 22px;gap:16px}
+  .pc-dots{display:flex;gap:8px;align-items:center}
+  .pc-dot{width:8px;height:8px;border-radius:50%;background:var(--muted);border:none;padding:0;cursor:pointer;transition:background .25s ease,transform .25s ease}
+  .pc-dot.on{background:var(--accent);transform:scale(1.25)}
+  .pc-btn{font-family:"Instrument Sans",sans-serif;font-size:14px;font-weight:500;color:var(--ink);background:var(--paper);border:1px solid var(--muted);border-radius:4px;padding:9px 16px;cursor:pointer;transition:border-color .2s ease,opacity .2s ease;display:inline-flex;align-items:center;gap:7px}
+  .pc-btn:hover{border-color:var(--steel)}
+  .pc-btn:disabled{opacity:0.35;cursor:default}
+  .pc-btn.primary{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+  .pc-btn.primary:hover{background:var(--accent-deep);border-color:var(--accent-deep)}
+  /* SVG layer build-in */
+  .lyr{opacity:0;transform:translateY(8px);transition:opacity .45s ease,transform .45s ease}
+  .lyr.on{opacity:1;transform:none}
+  .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .cover .eyebrow,.cover h1,.cover .lede,.cover-meta{transform:translateY(14px)}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important}.reveal{opacity:1;transform:none}.cover .eyebrow,.cover h1,.cover .lede,.cover-meta{transform:none;opacity:1}.lyr{transition:none}}
+
+  @media(max-width:640px){
+    .page{padding:0 22px}
+    .cover{padding:60px 0 44px}
+    .invest{padding:30px 26px}
+  }
+  svg text{font-family:"Instrument Sans",sans-serif}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="cover">
+    <div class="eyebrow">Workshop AI &middot; For Nicholas Rice &middot; Rice Group</div>
+    <h1>You've built it, and you've seen it work. Now let's make it <em>robust, trustworthy and scalable.</em></h1>
+    <p class="lede">Your discovery work has proven there's real value here, you've got agents doing actual work and skills handling real jobs. This next step is about turning what works into something your whole team can rely on, the same way every time, that doesn't fall over when things change or when the people who built it move on. You've shown what this can do, this next step is making it solid and built to last.</p>
+    <div class="cover-meta">
+      <div><span>Prepared by</span><strong>Justin Watts</strong></div>
+      <div><span>Date</span><strong>June 2026</strong></div>
+      <div><span>First step</span><strong>$500 + GST</strong></div>
+    </div>
+  </header>
+
+  <section class="reveal">
+    <h2><span class="num">01 &middot; The foundation</span>Three lanes for the work.</h2>
+    <p class="intro">The foundation is simple to describe: every piece of work falls into one of three lanes, and each lane gets only the control it needs. Some work should stay free and open. Some should be shared but protected. And the high-stakes, repeatable work earns the full treatment. Bob, the invoice tool, and the accounts skill all have a lane they belong in, they've just never been placed in one deliberately. The job is making that a decision rather than an accident.</p>
+
+    <div class="dia">
+      <svg viewBox="0 0 760 360" role="img" aria-label="Three lanes of work, with the two structured lanes resting on a shared foundation and ad-hoc work kept separate">
+        <rect x="40" y="36" width="200" height="116" rx="8" fill="#FBF8F3" stroke="#7A8050" stroke-width="1.4"/>
+        <text x="140" y="62" text-anchor="middle" font-family="Fraunces,serif" font-size="15" font-weight="600" fill="#1F1B16">Ad-hoc</text>
+        <text x="140" y="84" text-anchor="middle" font-size="11" fill="#5A5249">Drafting, thinking, exploring.</text>
+        <text x="140" y="100" text-anchor="middle" font-size="11" fill="#5A5249">Stays free and open.</text>
+        <text x="140" y="124" text-anchor="middle" font-size="10" fill="#7A8050" font-style="italic">Your team's chat &middot; project docs</text>
+        <text x="140" y="142" text-anchor="middle" font-size="10" fill="#8A8077" font-style="italic">No governance needed</text>
+
+        <rect x="290" y="36" width="200" height="116" rx="8" fill="#FBF8F3" stroke="#C89E4D" stroke-width="1.6"/>
+        <text x="390" y="62" text-anchor="middle" font-family="Fraunces,serif" font-size="15" font-weight="600" fill="#1F1B16">Simple, shared</text>
+        <text x="390" y="84" text-anchor="middle" font-size="11" fill="#5A5249">Shared setups the team can</text>
+        <text x="390" y="100" text-anchor="middle" font-size="11" fill="#5A5249">use but not break by accident.</text>
+        <text x="390" y="124" text-anchor="middle" font-size="10" fill="#A8801F" font-style="italic">Today's desktop skills land here</text>
+        <text x="390" y="142" text-anchor="middle" font-size="10" fill="#8A8077" font-style="italic">Locked, light control</text>
+
+        <rect x="540" y="36" width="200" height="116" rx="8" fill="#FBF8F3" stroke="#E0531F" stroke-width="1.8"/>
+        <text x="640" y="62" text-anchor="middle" font-family="Fraunces,serif" font-size="15" font-weight="600" fill="#B23F13">Bounded agents</text>
+        <text x="640" y="84" text-anchor="middle" font-size="11" fill="#5A5249">High-stakes, repeatable.</text>
+        <text x="640" y="100" text-anchor="middle" font-size="11" fill="#5A5249">One job each, on rails.</text>
+        <text x="640" y="120" text-anchor="middle" font-size="10" fill="#B23F13" font-style="italic">Where Bob and the invoice tool</text>
+        <text x="640" y="133" text-anchor="middle" font-size="10" fill="#B23F13" font-style="italic">belong, plus some Cowork work</text>
+        <text x="640" y="148" text-anchor="middle" font-size="10" fill="#8A8077" font-style="italic">Full control</text>
+
+        <text x="140" y="188" text-anchor="middle" font-size="10.5" fill="#7A8050" font-style="italic">Sits apart, on purpose</text>
+
+        <g stroke="#2D4A5C" stroke-width="1.3">
+          <line x1="390" y1="152" x2="390" y2="188"/>
+          <line x1="640" y1="152" x2="640" y2="188"/>
+        </g>
+
+        <rect x="290" y="190" width="450" height="78" rx="10" fill="rgba(224,83,31,0.07)" stroke="#E0531F" stroke-width="1.8"/>
+        <text x="515" y="218" text-anchor="middle" font-family="Fraunces,serif" font-size="16" font-weight="600" fill="#B23F13">One shared foundation</text>
+        <text x="515" y="240" text-anchor="middle" font-size="11.5" fill="#5A5249">Skills in one place &middot; edits gated &middot; every run recorded</text>
+        <text x="515" y="256" text-anchor="middle" font-size="11.5" fill="#5A5249">and the rules of who can change what</text>
+
+        <text x="380" y="312" text-anchor="middle" font-size="11.5" fill="#8A8077" font-style="italic">The control scales with the work. Open work stays open. Shared work gets light rails. High-stakes work gets full ones.</text>
+      </svg>
+      <div class="dia-cap">Where your tools already belong</div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2><span class="num">02 &middot; The path</span>Five levels. Each one earns the next.</h2>
+    <p class="intro">The three lanes sit inside a bigger picture: the path every business climbs with AI. Step through it below, and watch the system build one layer at a time. You're already partway up.</p>
+
+    <div class="pathcard" id="pathCard">
+      <div class="pc-progress" id="pcProgress">
+        <div class="pc-seg" data-go="1"></div>
+        <div class="pc-seg" data-go="2"></div>
+        <div class="pc-seg" data-go="3"></div>
+        <div class="pc-seg" data-go="4"></div>
+        <div class="pc-seg" data-go="5"></div>
+      </div>
+
+      <div class="pc-body">
+        <div class="pc-text">
+          <div class="pc-stepno" id="pcStepNo">Level 01 of 05</div>
+          <div class="pc-head"><h3 id="pcTitle">Configure</h3><span class="pc-tag" id="pcTag">Foundation</span></div>
+          <p class="pc-lead" id="pcLead">The right tools in place, used safely and the same way by everyone.</p>
+          <p class="pc-role" id="pcRole">Useful from day one. But each tool still sits on its own.</p>
+        </div>
+
+        <div class="pc-dia">
+          <svg id="pathSvg" viewBox="0 0 360 212" role="img" aria-label="The system building up layer by layer: tools, then connections to your software, then a knowing layer, then agents, then the whole thing enclosed and learning">
+            <g id="L5" class="lyr">
+              <rect x="6" y="6" width="348" height="200" rx="20" fill="none" stroke="#E0531F" stroke-width="2" stroke-dasharray="6 5"/>
+            </g>
+            <g id="L1" class="lyr">
+              <g fill="#1F1B16" text-anchor="middle">
+                <rect x="54" y="26" width="72" height="34" rx="5" fill="#FBF8F3" stroke="#2D4A5C" stroke-width="1.4"/><text x="90" y="47" font-size="11">Claude</text>
+                <rect x="144" y="26" width="72" height="34" rx="5" fill="#FBF8F3" stroke="#2D4A5C" stroke-width="1.4"/><text x="180" y="47" font-size="11">AI tools</text>
+                <rect x="234" y="26" width="72" height="34" rx="5" fill="#FBF8F3" stroke="#2D4A5C" stroke-width="1.4"/><text x="270" y="40" font-size="9">Trade-specific</text><text x="270" y="52" font-size="9">tools</text>
+              </g>
+            </g>
+            <g id="L2" class="lyr">
+              <g stroke="#8A8275" stroke-width="1">
+                <line x1="90" y1="60" x2="58" y2="72"/><line x1="90" y1="60" x2="119" y2="72"/>
+                <line x1="180" y1="60" x2="180" y2="72"/><line x1="180" y1="60" x2="241" y2="72"/>
+                <line x1="270" y1="60" x2="241" y2="72"/><line x1="270" y1="60" x2="302" y2="72"/>
+              </g>
+              <g font-size="9" fill="#1F1B16" text-anchor="middle">
+                <rect x="31" y="72" width="54" height="26" rx="5" fill="#FBF8F3" stroke="#2D4A5C" stroke-width="1.4"/><text x="58" y="89">Xero</text>
+                <rect x="92" y="72" width="54" height="26" rx="5" fill="#FBF8F3" stroke="#2D4A5C" stroke-width="1.4"/><text x="119" y="89">Job mgmt</text>
+                <rect x="153" y="72" width="54" height="26" rx="5" fill="#FBF8F3" stroke="#2D4A5C" stroke-width="1.4"/><text x="180" y="89">Email</text>
+                <rect x="214" y="72" width="54" height="26" rx="5" fill="#FBF8F3" stroke="#2D4A5C" stroke-width="1.4"/><text x="241" y="89">SharePoint</text>
+                <rect x="275" y="72" width="54" height="26" rx="5" fill="#FBF8F3" stroke="#2D4A5C" stroke-width="1.4"/><text x="302" y="89">Files</text>
+              </g>
+            </g>
+            <g id="L3" class="lyr">
+              <rect x="22" y="18" width="316" height="88" rx="12" fill="rgba(45,74,92,0.05)" stroke="#BBB1A1" stroke-width="1"/>
+              <line x1="180" y1="106" x2="180" y2="118" stroke="#2D4A5C" stroke-width="1.4"/>
+              <rect x="40" y="118" width="280" height="32" rx="6" fill="rgba(224,83,31,0.08)" stroke="#E0531F" stroke-width="2"/>
+              <text x="180" y="139" text-anchor="middle" font-family="Fraunces,serif" font-size="16" font-weight="600" fill="#B23F13">Know</text>
+            </g>
+            <g id="L4" class="lyr">
+              <g stroke="#2D4A5C" stroke-width="1.3">
+                <line x1="100" y1="150" x2="100" y2="168"/><line x1="180" y1="150" x2="180" y2="168"/><line x1="260" y1="150" x2="260" y2="168"/>
+              </g>
+              <g fill="#FBF8F3" stroke="#2D4A5C" stroke-width="1.4">
+                <rect x="75" y="168" width="50" height="26" rx="5"/><rect x="155" y="168" width="50" height="26" rx="5"/><rect x="235" y="168" width="50" height="26" rx="5"/>
+              </g>
+              <g fill="#2D4A5C"><circle cx="100" cy="174.5" r="1.4"/><circle cx="180" cy="174.5" r="1.4"/><circle cx="260" cy="174.5" r="1.4"/><circle cx="96" cy="183.5" r="1.4"/><circle cx="104" cy="183.5" r="1.4"/><circle cx="176" cy="183.5" r="1.4"/><circle cx="184" cy="183.5" r="1.4"/><circle cx="256" cy="183.5" r="1.4"/><circle cx="264" cy="183.5" r="1.4"/></g><g stroke="#2D4A5C" stroke-width="1.4" stroke-linecap="round"><line x1="100" y1="176" x2="100" y2="178"/><line x1="180" y1="176" x2="180" y2="178"/><line x1="260" y1="176" x2="260" y2="178"/></g><g fill="none" stroke="#2D4A5C" stroke-width="1.4"><rect x="91.5" y="178" width="17" height="11" rx="3"/><rect x="171.5" y="178" width="17" height="11" rx="3"/><rect x="251.5" y="178" width="17" height="11" rx="3"/></g>
+            </g>
+          </svg>
+          <div class="pc-cap" id="pathCap">Configure &middot; the tools in place</div>
+        </div>
+      </div>
+
+      <div class="pc-nav">
+        <button class="pc-btn" id="pcPrev" aria-label="Previous level">&larr; Back</button>
+        <div class="pc-dots" id="pcDots">
+          <button class="pc-dot on" data-go="1" aria-label="Go to level 1"></button>
+          <button class="pc-dot" data-go="2" aria-label="Go to level 2"></button>
+          <button class="pc-dot" data-go="3" aria-label="Go to level 3"></button>
+          <button class="pc-dot" data-go="4" aria-label="Go to level 4"></button>
+          <button class="pc-dot" data-go="5" aria-label="Go to level 5"></button>
+        </div>
+        <button class="pc-btn primary" id="pcNext" aria-label="Next level">Next &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2><span class="num">03 &middot; How we decide what to build</span>Four questions before any agent.</h2>
+    <p class="intro">Not everything should be an agent. Before we build one, the job has to pass four questions. A clear "no" on any of the first three means we don't build it as an agent. The fourth sets how much it's allowed to do on its own.</p>
+
+    <div class="gate">
+      <div class="q"><div class="qn">1</div><div><h4>Is the input structured?</h4><p>Can the work start from something consistent, like an invoice or a report, not a vague request?</p></div></div>
+      <div class="q"><div class="qn">2</div><div><h4>Are the steps definable?</h4><p>Can we write down what it does, step by step, the same way each time?</p></div></div>
+      <div class="q"><div class="qn">3</div><div><h4>Is the output checkable?</h4><p>Can a person look at the result and tell quickly whether it's right?</p></div></div>
+      <div class="q"><div class="qn">4</div><div><h4>What's the cost of a wrong answer?</h4><p>Low and reversible: the agent acts. High or hard to undo: the agent suggests, a person commits.</p></div></div>
+    </div>
+    <p class="gate-note">This is why your financial work is built to suggest, not act. The agent does the heavy lifting; a person stays on the trigger.</p>
+  </section>
+
+  <section class="reveal">
+    <h2><span class="num">04 &middot; The first step</span>The lay of the land, written down.</h2>
+    <p class="intro">This is the detailed breakdown we talked about: how the business actually works, where the value sits, what's solid and what's fragile. We sit down, go through it properly, and turn this map into a labelled plan: which jobs go in which lane, which become agents, in what order, and what the first one is.</p>
+
+    <div class="scene">
+      <div class="scene-label">What you walk away with</div>
+      <p>A clear pathway forward, written down. Your work sorted into the three lanes. The handful of jobs worth building as bounded agents, scored and put in order. The first one picked, scoped, and ready to start.</p>
+      <p>No big commitment, no guesswork. You see exactly where the value is and what it costs before anything bigger is agreed.</p>
+    </div>
+
+    <p class="intro">It answers the question you actually have: not "can AI do this," but "what do we do first, and what after that." Some of what you've built sits with one person and one machine. Getting it captured and onto shared ground is the piece that can't wait. The rest can move at your pace.</p>
+  </section>
+
+  <section class="reveal">
+    <h2><span class="num">05 &middot; What's in, what's not</span>Clear lines.</h2>
+    <div class="scope">
+      <div class="scope-col in">
+        <h4>The first step includes</h4>
+        <ul>
+          <li>A working session through the whole business</li>
+          <li>Your work sorted into the three lanes</li>
+          <li>Agent candidates scored and sequenced</li>
+          <li>The first build scoped and costed</li>
+          <li>A written pathway you keep</li>
+          <li>Capturing knowledge from the departing role</li>
+        </ul>
+      </div>
+      <div class="scope-col out">
+        <h4>Not yet (these come after)</h4>
+        <ul>
+          <li>Building the first agent</li>
+          <li>Setting up the shared governance layer</li>
+          <li>Touching Bob or the invoice tool</li>
+          <li>Connecting your systems together</li>
+          <li>Team training and rollout</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2><span class="num">06 &middot; Investment</span>Start small. Build from there.</h2>
+
+    <div class="invest">
+      <div class="invest-row">
+        <div class="invest-block">
+          <div class="invest-label">The first step &middot; the pathway</div>
+          <div class="invest-amount">$500 <span>+ GST</span></div>
+          <div class="invest-detail">Fixed. The working session and your written pathway forward. Proves the thinking before anything bigger.</div>
+        </div>
+        <div class="invest-divide"></div>
+        <div class="invest-block">
+          <div class="invest-label">From there &middot; a piece at a time</div>
+          <div class="invest-amount">$3,600 <span>+ GST / month</span></div>
+          <div class="invest-detail">Two units of work a month, one solid project, scoped so you know what it delivers before we start. You set the pace, and you can pause or stop between projects.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p><strong>What a project looks like.</strong> Each one is a discrete piece of the pathway, taken end to end. Putting the accounts skill onto the shared foundation so it's safe to use and doesn't leave with the person who built it. Or standing up the first bounded agent for the invoice work, with the human kept on the trigger. We agree the next project together, build it, and it's done. The monthly model just works out better value than scoping each job on its own.</p>
+    </div>
+
+    <div class="callout">
+      <p><strong>What this looks like in practice.</strong> We're doing this now for Mattick Air. An email agent for service quotes, a defined process, a clear definition of done, built and handed over. That's roughly what one month buys.</p>
+    </div>
+  </section>
+
+  <section class="epilogue reveal">
+    <h2><span class="num">07 &middot; What comes next</span>How this starts.</h2>
+    <p>The first step is the discovery session: we sit down, go through the business, and map the pathway forward. From that you get the written breakdown, the work sorted, and a first build scoped and priced.</p>
+    <p>If you want to go ahead, let me know and we'll find a time that suits. I'll send through what I need from you beforehand so the session is useful from the first minute.</p>
+    <div class="signoff">
+      <strong>Justin Watts, Workshop AI</strong>
+    </div>
+  </section>
+
+  <footer>
+    <p>Workshop AI &middot; Melbourne &middot; Prepared for Rice Group &middot; June 2026</p>
+  </footer>
+
+</div>
+
+<script>
+  (function(){
+    var els=document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return;}
+    var io=new IntersectionObserver(function(entries){entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:0.1,rootMargin:'0px 0px -6% 0px'});
+    els.forEach(function(e){io.observe(e);});
+  })();
+
+  (function(){
+    var card=document.getElementById('pathCard');
+    if(!card)return;
+    var levels=[
+      {n:1,title:'Configure',tag:'Foundation',key:false,here:false,
+       lead:'The right tools in place, used safely and the same way by everyone.',
+       role:'Useful from day one. But each tool still sits on its own.',
+       cap:'Configure \u00b7 the tools in place'},
+      {n:2,title:'Connect',tag:'You are roughly here',key:false,here:true,
+       lead:'The tools join up with the software you already run, and the business comes out of people\u2019s heads into one picture you can see and ask about.',
+       role:'The threshold. Nothing above this level pays off until it is crossed. Fragments become one business.',
+       cap:'Connect \u00b7 joined to your software'},
+      {n:3,title:'Know',tag:'The turning point',key:true,here:false,
+       lead:'The business gains a memory of its own goals and a way to talk to the whole of it. It stops showing you what is happening and starts telling you where to push.',
+       role:'Connect gives you sight. Know gives you direction.',
+       cap:'Know \u00b7 one place to ask'},
+      {n:4,title:'Act',tag:'The accelerator',key:false,here:false,
+       lead:'With the whole picture in view and a direction set, bounded agents take defined work off your plate, each doing one job, on rails.',
+       role:'The level most businesses reach for first. Out of order it just speeds up the mess. In order, it is what sets you apart.',
+       cap:'Act \u00b7 agents on defined work'},
+      {n:5,title:'Learn',tag:'The whole system',key:true,here:false,
+       lead:'The system learns from its own record: what changed, what worked, what worked before. It keeps everything below it alive as your business changes.',
+       role:'The only self-sustaining level, and the only one that becomes your own asset, built from a history no competitor holds.',
+       cap:'Learn \u00b7 the whole system, enclosed'}
+    ];
+    var cur=1;
+    var elNo=document.getElementById('pcStepNo'),elTitle=document.getElementById('pcTitle'),elTag=document.getElementById('pcTag'),
+        elLead=document.getElementById('pcLead'),elRole=document.getElementById('pcRole'),elCap=document.getElementById('pathCap'),
+        prev=document.getElementById('pcPrev'),next=document.getElementById('pcNext');
+    var segs=Array.prototype.slice.call(document.querySelectorAll('.pc-seg'));
+    var dots=Array.prototype.slice.call(document.querySelectorAll('.pc-dot'));
+
+    function pad(n){return n<10?'0'+n:''+n;}
+    function render(n){
+      cur=n;
+      var L=levels[n-1];
+      for(var i=1;i<=5;i++){var g=document.getElementById('L'+i);if(g)g.classList.toggle('on',i<=n);}
+      elNo.textContent='Level '+pad(n)+' of 05';
+      elTitle.textContent=L.title;
+      elTag.textContent=L.tag;
+      elTag.className='pc-tag'+(L.here?' here':(L.key?' key':''));
+      elLead.textContent=L.lead;
+      elRole.textContent=L.role;
+      elRole.className='pc-role'+(L.key?' key':'');
+      elCap.textContent=L.cap;
+      segs.forEach(function(s,i){s.classList.toggle('active',i+1===n);s.classList.toggle('done',i+1<n);});
+      dots.forEach(function(d,i){d.classList.toggle('on',i+1===n);});
+      prev.disabled=(n===1);
+      next.disabled=(n===5);
+    }
+    function go(n){if(n<1)n=1;if(n>5)n=5;render(n);}
+    prev.addEventListener('click',function(){go(cur-1);});
+    next.addEventListener('click',function(){go(cur+1);});
+    segs.forEach(function(s){s.addEventListener('click',function(){go(+s.getAttribute('data-go'));});});
+    dots.forEach(function(d){d.addEventListener('click',function(){go(+d.getAttribute('data-go'));});});
+    card.setAttribute('tabindex','0');
+    card.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){go(cur+1);}else if(e.key==='ArrowLeft'){go(cur-1);}});
+    render(1);
+  })();
+</script>
+
+</body>
+</html>
