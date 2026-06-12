@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Workshop AI — proposal for Premium Glass &amp; Glazing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#FAF7F2;--paper-2:#F3EDE3;--paper-warm:#F0E9DC;
+    --ink:#1F1B16;--ink-soft:#5A5249;--ink-faint:#8A8077;
+    --accent:#E0531F;--accent-deep:#B23F13;--accent-soft:#E8C4B3;
+    --steel:#2D4A5C;--olive:#7A8050;--muted:#D8D0C4;
+    --line:rgba(31,27,22,0.12);--line-soft:#E8E0D0;--highlight:#FBEED6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:"Instrument Sans",sans-serif;font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  .page{max-width:880px;margin:0 auto;padding:0 40px}
+  h1,h2,h3{font-family:"Fraunces",serif;font-weight:500;line-height:1.1;letter-spacing:-0.01em}
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent-deep)}
+
+  /* Cover */
+  .cover{padding:88px 0 56px;border-bottom:1px solid var(--line)}
+  .cover .eyebrow{opacity:0;animation:rise .7s ease forwards}
+  .cover h1{font-size:clamp(38px,6vw,64px);font-weight:600;margin:22px 0 24px;max-width:17ch;opacity:0;animation:rise .7s ease .08s forwards}
+  .cover h1 em{font-style:italic;color:var(--accent-deep);font-weight:400}
+  .cover .lede{font-family:"Fraunces",serif;font-size:clamp(19px,2.2vw,23px);color:var(--ink-soft);max-width:60ch;opacity:0;animation:rise .7s ease .16s forwards}
+  .cover-meta{margin-top:40px;display:flex;gap:48px;flex-wrap:wrap;font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:0.06em;color:var(--ink-faint);opacity:0;animation:rise .7s ease .24s forwards}
+  .cover-meta div{display:flex;flex-direction:column;gap:5px}
+  .cover-meta strong{color:var(--ink);font-weight:500}
+
+  section{padding:60px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:clamp(26px,3.2vw,36px);margin-bottom:18px;max-width:24ch}
+  h2 .num{display:block;font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:500;color:var(--accent);letter-spacing:0.1em;margin-bottom:10px;text-transform:uppercase}
+  .intro{font-size:18px;color:var(--ink-soft);max-width:64ch;margin-bottom:8px}
+  .intro + .intro{margin-top:14px}
+
+  /* Diagram frame */
+  .dia{margin:36px 0 8px;padding:32px 28px;background:var(--paper-warm);border:1px solid var(--line-soft);border-radius:4px}
+  .dia svg{width:100%;height:auto;display:block;max-width:760px;margin:0 auto}
+  .dia-cap{text-align:center;margin-top:18px;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-faint);letter-spacing:0.08em;text-transform:uppercase}
+
+  /* Scene / pull */
+  .scene{display:grid;grid-template-columns:1fr;gap:0;background:var(--paper-2);border-left:3px solid var(--accent);padding:28px 32px;margin:32px 0;border-radius:2px}
+  .scene .scene-label{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent-deep);margin-bottom:12px;font-weight:500}
+  .scene p{font-family:"Fraunces",serif;font-size:18px;line-height:1.5;color:var(--ink);max-width:none}
+  .scene p + p{margin-top:10px}
+
+  /* Three-col */
+  .three{display:grid;grid-template-columns:1fr;gap:28px;margin-top:32px}
+  @media(min-width:760px){.three{grid-template-columns:repeat(3,1fr);gap:32px}}
+  .three .bar{width:34px;height:3px;background:var(--accent);margin-bottom:14px}
+  .three h3{font-size:18px;font-weight:600;margin-bottom:8px}
+  .three p{font-size:15px;color:var(--ink-soft)}
+
+  /* Gate (four questions) */
+  .gate{display:grid;grid-template-columns:1fr;gap:14px;margin-top:32px}
+  @media(min-width:680px){.gate{grid-template-columns:repeat(2,1fr);gap:16px}}
+  .q{background:var(--paper);border:1px solid var(--line-soft);border-radius:4px;padding:20px 22px;display:grid;grid-template-columns:30px 1fr;gap:14px;align-items:start}
+  .q .qn{font-family:"Fraunces",serif;font-size:20px;font-weight:600;color:var(--accent)}
+  .q h4{font-family:"Fraunces",serif;font-size:17px;font-weight:600;margin-bottom:3px}
+  .q p{font-size:14.5px;color:var(--ink-soft);margin:0}
+  .gate-note{margin-top:18px;font-size:15px;color:var(--ink-soft);font-style:italic;max-width:64ch}
+
+  /* Steps (units of work) */
+  .steps{margin-top:32px;display:grid;grid-template-columns:1fr;gap:0}
+  .step{display:grid;grid-template-columns:46px 1fr;gap:20px;padding:22px 0;border-top:1px solid var(--line)}
+  @media(min-width:720px){.step{grid-template-columns:60px 1fr;gap:28px}}
+  .step:last-child{border-bottom:1px solid var(--line)}
+  .step-n{font-family:"Fraunces",serif;font-weight:600;font-size:19px;color:var(--steel);width:46px;height:46px;border:2px solid var(--steel);border-radius:50%;display:flex;align-items:center;justify-content:center}
+  @media(min-width:720px){.step-n{width:60px;height:60px;font-size:22px}}
+  .step.first .step-n{border-color:var(--accent);color:var(--accent-deep)}
+  .step-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:12px;margin-bottom:6px}
+  .step h3{font-size:clamp(19px,2.3vw,23px);font-weight:600}
+  .step .tag{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:4px 9px;color:var(--steel);border:1px solid var(--muted);border-radius:2px}
+  .step.first .tag{color:var(--accent-deep);border-color:var(--accent);background:rgba(224,83,31,0.06)}
+  .step p{font-size:15.5px;color:var(--ink-soft);max-width:62ch}
+
+  /* Scope */
+  .scope{display:grid;grid-template-columns:1fr;gap:28px;margin-top:28px}
+  @media(min-width:680px){.scope{grid-template-columns:1fr 1fr;gap:32px}}
+  .scope-col h4{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;font-weight:500}
+  .scope-col.in h4{color:var(--olive)}
+  .scope-col.out h4{color:var(--ink-faint)}
+  .scope-col ul{list-style:none}
+  .scope-col li{padding:9px 0 9px 22px;font-size:15px;color:var(--ink-soft);border-top:1px solid var(--line-soft);position:relative;line-height:1.5}
+  .scope-col li:last-child{border-bottom:1px solid var(--line-soft)}
+  .scope-col.in li::before{content:"+";position:absolute;left:0;color:var(--olive);font-weight:600}
+  .scope-col.out li::before{content:"\2013";position:absolute;left:0;color:var(--ink-faint)}
+
+  /* Investment */
+  .invest{background:var(--ink);color:var(--paper);padding:40px 44px;border-radius:4px;margin:32px 0}
+  .invest-row{display:grid;grid-template-columns:1fr;gap:28px}
+  @media(min-width:640px){.invest-row{grid-template-columns:1fr 1fr;gap:40px}}
+  .invest-block .invest-label{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent-soft);margin-bottom:12px}
+  .invest-amount{font-family:"Fraunces",serif;font-size:46px;font-weight:500;line-height:1;letter-spacing:-0.02em;margin-bottom:8px}
+  .invest-amount span{font-size:18px;color:var(--accent-soft)}
+  .invest-detail{font-size:14px;color:var(--paper-2);opacity:0.85;max-width:34ch}
+  .invest-divide{height:1px;background:rgba(250,247,242,0.16);margin:4px 0}
+  @media(min-width:640px){.invest-divide{width:1px;height:auto;margin:0}}
+
+  .callout{background:var(--highlight);padding:20px 24px;border-radius:4px;margin:24px 0;border-left:3px solid var(--accent)}
+  .callout p{margin:0;font-size:15px;color:var(--ink-soft);line-height:1.55}
+  .callout strong{color:var(--ink)}
+
+  /* Placeholder (proof point to come) */
+  .placeholder{margin-top:28px;padding:40px 32px;border:1.5px dashed var(--muted);border-radius:6px;background:var(--paper-2);text-align:center}
+  .placeholder .ph-label{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:10px}
+  .placeholder p{font-family:"Fraunces",serif;font-size:17px;color:var(--ink-soft);font-style:italic;max-width:54ch;margin:0 auto}
+
+  .epilogue p{font-family:"Fraunces",serif;font-size:17px;line-height:1.55;color:var(--ink-soft);font-style:italic;max-width:62ch;margin-bottom:16px}
+  .signoff{margin-top:40px;font-family:"Fraunces",serif;font-size:16px;color:var(--ink-soft)}
+  .signoff strong{display:block;color:var(--ink);font-weight:600;margin-top:4px}
+  footer{padding:48px 0 64px}
+  footer p{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:0.06em;color:var(--ink-faint)}
+
+  .reveal{opacity:0;transform:translateY(16px)}
+  .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .cover .eyebrow,.cover h1,.cover .lede,.cover-meta{transform:translateY(14px)}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important}.reveal{opacity:1;transform:none}.cover .eyebrow,.cover h1,.cover .lede,.cover-meta{transform:none;opacity:1}}
+
+  @media(max-width:640px){
+    .page{padding:0 22px}
+    .cover{padding:60px 0 44px}
+    .invest{padding:30px 26px}
+  }
+  svg text{font-family:"Instrument Sans",sans-serif}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="cover">
+    <div class="eyebrow">Workshop AI &middot; For Craig &middot; Premium Glass &amp; Glazing</div>
+    <h1>Get back to the work <em>only you can do.</em></h1>
+    <p class="lede">Right now the complicated quotes only you can price are the thing keeping you in the office. The plan is to take everything that sits in front of that judgement off your plate, so the quotes arrive drafted and waiting, you run your eye over them, and the rest of your day is yours again. Built one piece at a time, each one proving its worth before the next.</p>
+    <div class="cover-meta">
+      <div><span>Prepared by</span><strong>Justin Watts</strong></div>
+      <div><span>Date</span><strong>June 2026</strong></div>
+      <div><span>First step</span><strong>To be scoped together</strong></div>
+    </div>
+  </header>
+
+  <section class="reveal">
+    <h2><span class="num">01 &middot; Where it gets stuck</span>One day, nine quotes.</h2>
+    <p class="intro">You already have a good system. Inquiries come in, Leah gathers what's needed, the job goes into ServiceM8, the simple quotes get done and sent. It works right up until a builder sends a full plan set. Then it stops, because only you can read those plans, identify each element, and do the takeoffs. Eighteen years of judgement, and it all has to pass through you.</p>
+    <p class="intro">That's the choke point. Not because anyone's doing anything wrong, but because the knowledge lives in one head. Here's the complex quote as it runs today.</p>
+
+    <div class="dia">
+      <svg viewBox="0 0 760 690" role="img" aria-label="Current state of the complex quote flow across three lanes: inbound, Leah, and Craig. The takeoff and pricing steps are entirely Craig's, consuming the whole day.">
+        <line x1="168" y1="44" x2="168" y2="660" stroke="#1F1B16" stroke-width="0.75" opacity="0.18"/>
+        <line x1="448" y1="44" x2="448" y2="660" stroke="#1F1B16" stroke-width="0.75" opacity="0.18"/>
+        <text x="50" y="32" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing="0.06em" fill="#8A8077">INBOUND</text>
+        <text x="308" y="32" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing="0.06em" fill="#8A8077">LEAH</text>
+        <text x="604" y="32" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing="0.06em" fill="#8A8077">CRAIG &middot; THE CHOKE POINT</text>
+
+        <rect x="44" y="58" width="112" height="52" rx="7" fill="#FBF8F3" stroke="#7A8050" stroke-width="1.4"/>
+        <text x="100" y="80" text-anchor="middle" font-size="12" fill="#5A5249">Builder emails</text>
+        <text x="100" y="96" text-anchor="middle" font-size="12" fill="#5A5249">plans / zip</text>
+
+        <rect x="188" y="58" width="220" height="52" rx="7" fill="#FBF8F3" stroke="#2D4A5C" stroke-width="1.4"/>
+        <text x="298" y="80" text-anchor="middle" font-family="Fraunces,serif" font-size="14" font-weight="600" fill="#1F1B16">Reads inquiry, chases gaps</text>
+        <text x="298" y="98" text-anchor="middle" font-size="11.5" fill="#5A5249">Gathers missing info by email</text>
+        <line x1="156" y1="84" x2="186" y2="84" stroke="#2D4A5C" stroke-width="1.3"/>
+        <polygon points="186,84 179,80.5 179,87.5" fill="#2D4A5C"/>
+
+        <rect x="188" y="126" width="220" height="52" rx="7" fill="#FBF8F3" stroke="#2D4A5C" stroke-width="1.4"/>
+        <text x="298" y="148" text-anchor="middle" font-family="Fraunces,serif" font-size="14" font-weight="600" fill="#1F1B16">Creates job in ServiceM8</text>
+        <text x="298" y="166" text-anchor="middle" font-size="11.5" fill="#5A5249">Simple quotes: done here</text>
+        <line x1="298" y1="110" x2="298" y2="124" stroke="#2D4A5C" stroke-width="1.3"/>
+        <polygon points="298,124 294.5,117 301.5,117" fill="#2D4A5C"/>
+
+        <rect x="468" y="126" width="248" height="46" rx="7" fill="rgba(224,83,31,0.07)" stroke="#E0531F" stroke-width="1.7"/>
+        <text x="592" y="154" text-anchor="middle" font-family="Fraunces,serif" font-size="14" font-weight="600" fill="#B23F13">Complex job: stops dead</text>
+        <line x1="408" y1="149" x2="466" y2="149" stroke="#E0531F" stroke-width="1.3"/>
+        <polygon points="466,149 459,145.5 459,152.5" fill="#E0531F"/>
+
+        <rect x="468" y="190" width="248" height="50" rx="7" fill="#FBF8F3" stroke="#C89E4D" stroke-width="1.5"/>
+        <text x="592" y="211" text-anchor="middle" font-family="Fraunces,serif" font-size="13.5" font-weight="600" fill="#1F1B16">Opens plan set</text>
+        <text x="592" y="228" text-anchor="middle" font-size="11.5" fill="#5A5249">Clicks through zip folders</text>
+        <line x1="592" y1="172" x2="592" y2="188" stroke="#C89E4D" stroke-width="1.3"/>
+        <polygon points="592,188 588.5,181 595.5,181" fill="#C89E4D"/>
+
+        <rect x="468" y="256" width="248" height="50" rx="7" fill="#FBF8F3" stroke="#C89E4D" stroke-width="1.5"/>
+        <text x="592" y="277" text-anchor="middle" font-family="Fraunces,serif" font-size="13.5" font-weight="600" fill="#1F1B16">Is there enough to quote?</text>
+        <text x="592" y="294" text-anchor="middle" font-size="11.5" fill="#5A5249">Reads the whole set to decide</text>
+        <line x1="592" y1="240" x2="592" y2="254" stroke="#C89E4D" stroke-width="1.3"/>
+        <polygon points="592,254 588.5,247 595.5,247" fill="#C89E4D"/>
+
+        <rect x="468" y="322" width="248" height="50" rx="7" fill="#FBF8F3" stroke="#C89E4D" stroke-width="1.5"/>
+        <text x="592" y="343" text-anchor="middle" font-family="Fraunces,serif" font-size="13.5" font-weight="600" fill="#1F1B16">Identifies each element</text>
+        <text x="592" y="360" text-anchor="middle" font-size="11.5" fill="#5A5249">Screens, balustrades, doors, mirrors</text>
+        <line x1="592" y1="306" x2="592" y2="320" stroke="#C89E4D" stroke-width="1.3"/>
+        <polygon points="592,320 588.5,313 595.5,313" fill="#C89E4D"/>
+
+        <rect x="468" y="388" width="248" height="50" rx="7" fill="#FBF8F3" stroke="#C89E4D" stroke-width="1.5"/>
+        <text x="592" y="409" text-anchor="middle" font-family="Fraunces,serif" font-size="13.5" font-weight="600" fill="#1F1B16">Takeoffs: measures it all</text>
+        <text x="592" y="426" text-anchor="middle" font-size="11.5" fill="#5A5249">Lineal m, m&#178;, counts, glass spec</text>
+        <line x1="592" y1="372" x2="592" y2="386" stroke="#C89E4D" stroke-width="1.3"/>
+        <polygon points="592,386 588.5,379 595.5,379" fill="#C89E4D"/>
+
+        <rect x="468" y="454" width="248" height="50" rx="7" fill="#FBF8F3" stroke="#C89E4D" stroke-width="1.5"/>
+        <text x="592" y="475" text-anchor="middle" font-family="Fraunces,serif" font-size="13.5" font-weight="600" fill="#1F1B16">Applies formulas and costs</text>
+        <text x="592" y="492" text-anchor="middle" font-size="11.5" fill="#5A5249">Glass weight, hinges, crane, labour</text>
+        <line x1="592" y1="438" x2="592" y2="452" stroke="#C89E4D" stroke-width="1.3"/>
+        <polygon points="592,452 588.5,445 595.5,445" fill="#C89E4D"/>
+
+        <rect x="468" y="520" width="248" height="50" rx="7" fill="#FBF8F3" stroke="#C89E4D" stroke-width="1.5"/>
+        <text x="592" y="541" text-anchor="middle" font-family="Fraunces,serif" font-size="13.5" font-weight="600" fill="#1F1B16">Builds and sends quote</text>
+        <text x="592" y="558" text-anchor="middle" font-size="11.5" fill="#5A5249">ServiceM8 template, then send</text>
+        <line x1="592" y1="504" x2="592" y2="518" stroke="#C89E4D" stroke-width="1.3"/>
+        <polygon points="592,518 588.5,511 595.5,511" fill="#C89E4D"/>
+
+        <rect x="468" y="588" width="248" height="58" rx="7" fill="rgba(224,83,31,0.07)" stroke="#E0531F" stroke-width="1.7"/>
+        <text x="592" y="612" text-anchor="middle" font-family="Fraunces,serif" font-size="14" font-weight="600" fill="#B23F13">~2 hours each. Nine waiting.</text>
+        <text x="592" y="631" text-anchor="middle" font-size="11.5" fill="#5A5249">The whole day, in the office</text>
+        <line x1="592" y1="570" x2="592" y2="586" stroke="#E0531F" stroke-width="1.3"/>
+        <polygon points="592,586 588.5,579 595.5,579" fill="#E0531F"/>
+
+        <text x="50" y="590" font-size="11.5" fill="#A8801F" font-style="italic">Amber steps: only you</text>
+        <text x="50" y="608" font-size="11.5" fill="#A8801F" font-style="italic">can do these. Your</text>
+        <text x="50" y="626" font-size="11.5" fill="#A8801F" font-style="italic">knowledge is the</text>
+        <text x="50" y="644" font-size="11.5" fill="#A8801F" font-style="italic">single point everything</text>
+        <text x="50" y="662" font-size="11.5" fill="#A8801F" font-style="italic">has to pass through.</text>
+      </svg>
+      <div class="dia-cap">Today &middot; the complex quote, start to finish</div>
+    </div>
+
+    <div class="scene">
+      <div class="scene-label">The cost</div>
+      <p>It isn't really the hours. It's what those hours stop you doing: chasing the contract work you actually want, getting back on the tools, taking a good client to lunch, being home. The quotes that keep you in the office are the ones that keep the business pointed the wrong way.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2><span class="num">02 &middot; Where it goes</span>Quotes drafted. You review.</h2>
+    <p class="intro">Nothing here replaces your judgement. The aim is the opposite: clear everything that sits in front of it, so the only thing left for you is the part that needs eighteen years behind it. The work moves off your plate one piece at a time, and a person stays on every decision that matters. Agents draft. You approve. Nothing consequential sends itself.</p>
+
+    <div class="dia">
+      <svg viewBox="0 0 760 760" role="img" aria-label="Proposed state. Bounded agents handle triage, intake validation, takeoff, and pricing, each gated by a human. Craig is left only the final review, with a learning loop feeding outcomes back in.">
+        <line x1="190" y1="48" x2="190" y2="724" stroke="#1F1B16" stroke-width="0.75" opacity="0.18"/>
+        <line x1="452" y1="48" x2="452" y2="724" stroke="#1F1B16" stroke-width="0.75" opacity="0.18"/>
+        <text x="48" y="34" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing="0.06em" fill="#8A8077">LEAH &middot; OVERSIGHT</text>
+        <text x="320" y="34" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing="0.06em" fill="#8A8077">BOUNDED AGENTS</text>
+        <text x="606" y="34" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing="0.06em" fill="#8A8077">CRAIG &middot; YOUR JUDGEMENT</text>
+
+        <rect x="44" y="58" width="128" height="52" rx="7" fill="#FBF8F3" stroke="#7A8050" stroke-width="1.4"/>
+        <text x="108" y="80" text-anchor="middle" font-size="12" fill="#5A5249">Inquiry / plans</text>
+        <text x="108" y="96" text-anchor="middle" font-size="12" fill="#5A5249">land in inbox</text>
+
+        <rect x="210" y="58" width="220" height="56" rx="7" fill="rgba(224,83,31,0.06)" stroke="#E0531F" stroke-width="1.5"/>
+        <text x="320" y="80" text-anchor="middle" font-family="Fraunces,serif" font-size="13.5" font-weight="600" fill="#B23F13">Agent 1 &middot; triage</text>
+        <text x="320" y="98" text-anchor="middle" font-size="11.5" fill="#5A5249">Reputable builder? Worth quoting?</text>
+        <line x1="172" y1="84" x2="208" y2="84" stroke="#7A8050" stroke-width="1.3"/>
+        <polygon points="208,84 201,80.5 201,87.5" fill="#7A8050"/>
+
+        <rect x="210" y="130" width="220" height="56" rx="7" fill="rgba(224,83,31,0.06)" stroke="#E0531F" stroke-width="1.5"/>
+        <text x="320" y="152" text-anchor="middle" font-family="Fraunces,serif" font-size="13.5" font-weight="600" fill="#B23F13">Agent 2 &middot; enough to quote?</text>
+        <text x="320" y="170" text-anchor="middle" font-size="11.5" fill="#5A5249">Yes / no. Auto-asks for any gaps</text>
+        <line x1="320" y1="114" x2="320" y2="128" stroke="#E0531F" stroke-width="1.3"/>
+        <polygon points="320,128 316.5,121 323.5,121" fill="#E0531F"/>
+
+        <rect x="44" y="130" width="128" height="56" rx="7" fill="#FBF8F3" stroke="#2D4A5C" stroke-width="1.4"/>
+        <text x="108" y="152" text-anchor="middle" font-family="Fraunces,serif" font-size="13" font-weight="600" fill="#1F1B16">Gate</text>
+        <text x="108" y="170" text-anchor="middle" font-size="11.5" fill="#5A5249">Leah eyeballs</text>
+        <line x1="210" y1="158" x2="174" y2="158" stroke="#2D4A5C" stroke-width="1.3"/>
+        <polygon points="174,158 181,154.5 181,161.5" fill="#2D4A5C"/>
+
+        <rect x="210" y="222" width="220" height="56" rx="7" fill="rgba(224,83,31,0.06)" stroke="#E0531F" stroke-width="1.5"/>
+        <text x="320" y="244" text-anchor="middle" font-family="Fraunces,serif" font-size="13.5" font-weight="600" fill="#B23F13">Agent 3 &middot; takeoff</text>
+        <text x="320" y="262" text-anchor="middle" font-size="11.5" fill="#5A5249">Finds and measures elements</text>
+        <line x1="320" y1="186" x2="320" y2="220" stroke="#2D4A5C" stroke-width="1.3"/>
+        <polygon points="320,220 316.5,213 323.5,213" fill="#2D4A5C"/>
+
+        <rect x="210" y="294" width="220" height="56" rx="7" fill="rgba(224,83,31,0.06)" stroke="#E0531F" stroke-width="1.5"/>
+        <text x="320" y="316" text-anchor="middle" font-family="Fraunces,serif" font-size="13.5" font-weight="600" fill="#B23F13">Agent 4 &middot; pricing</text>
+        <text x="320" y="334" text-anchor="middle" font-size="11.5" fill="#5A5249">Formulas, glass spec, crane flag</text>
+        <line x1="320" y1="278" x2="320" y2="292" stroke="#E0531F" stroke-width="1.3"/>
+        <polygon points="320,292 316.5,285 323.5,285" fill="#E0531F"/>
+
+        <rect x="210" y="366" width="220" height="56" rx="7" fill="rgba(224,83,31,0.06)" stroke="#E0531F" stroke-width="1.5"/>
+        <text x="320" y="388" text-anchor="middle" font-family="Fraunces,serif" font-size="13.5" font-weight="600" fill="#B23F13">Drafts quote and workings</text>
+        <text x="320" y="406" text-anchor="middle" font-size="11.5" fill="#5A5249">Shows its line-by-line maths</text>
+        <line x1="320" y1="350" x2="320" y2="364" stroke="#E0531F" stroke-width="1.3"/>
+        <polygon points="320,364 316.5,357 323.5,357" fill="#E0531F"/>
+
+        <rect x="468" y="438" width="248" height="60" rx="7" fill="#FBF8F3" stroke="#C89E4D" stroke-width="1.6"/>
+        <text x="592" y="462" text-anchor="middle" font-family="Fraunces,serif" font-size="14" font-weight="600" fill="#1F1B16">You review the draft</text>
+        <text x="592" y="481" text-anchor="middle" font-size="11.5" fill="#5A5249">"Yep, yep, plus 10% labour there"</text>
+        <path d="M320 422 L320 468 L466 468" fill="none" stroke="#2D4A5C" stroke-width="1.3"/>
+        <polygon points="466,468 459,464.5 459,471.5" fill="#2D4A5C"/>
+
+        <rect x="468" y="514" width="248" height="52" rx="7" fill="#FBF8F3" stroke="#C89E4D" stroke-width="1.6"/>
+        <text x="592" y="535" text-anchor="middle" font-family="Fraunces,serif" font-size="14" font-weight="600" fill="#1F1B16">Tweaks and approves</text>
+        <text x="592" y="553" text-anchor="middle" font-size="11.5" fill="#5A5249">2 to 5 min each, not 2 hours</text>
+        <line x1="592" y1="498" x2="592" y2="512" stroke="#C89E4D" stroke-width="1.3"/>
+        <polygon points="592,512 588.5,505 595.5,505" fill="#C89E4D"/>
+
+        <rect x="468" y="582" width="248" height="48" rx="7" fill="#FBF8F3" stroke="#2D4A5C" stroke-width="1.4"/>
+        <text x="592" y="602" text-anchor="middle" font-family="Fraunces,serif" font-size="13.5" font-weight="600" fill="#1F1B16">Sent from ServiceM8</text>
+        <text x="592" y="619" text-anchor="middle" font-size="11.5" fill="#5A5249">Nine done by mid-morning</text>
+        <line x1="592" y1="566" x2="592" y2="580" stroke="#2D4A5C" stroke-width="1.3"/>
+        <polygon points="592,580 588.5,573 595.5,573" fill="#2D4A5C"/>
+
+        <rect x="468" y="646" width="248" height="56" rx="7" fill="rgba(122,128,80,0.10)" stroke="#7A8050" stroke-width="1.5"/>
+        <text x="592" y="669" text-anchor="middle" font-family="Fraunces,serif" font-size="13.5" font-weight="600" fill="#5C6238">Outcome logged back</text>
+        <text x="592" y="687" text-anchor="middle" font-size="11.5" fill="#5A5249">Won / lost, actual hours &rarr; learns</text>
+        <line x1="592" y1="630" x2="592" y2="644" stroke="#7A8050" stroke-width="1.3"/>
+        <polygon points="592,644 588.5,637 595.5,637" fill="#7A8050"/>
+
+        <path d="M468 674 L300 674 L300 394 L432 394" fill="none" stroke="#7A8050" stroke-width="1.2" stroke-dasharray="4 4"/>
+        <polygon points="432,394 425,390.5 425,397.5" fill="#7A8050"/>
+        <text x="206" y="520" font-size="11.5" fill="#5C6238" font-style="italic">Learning loop:</text>
+        <text x="206" y="538" font-size="11.5" fill="#5C6238" font-style="italic">real outcomes</text>
+        <text x="206" y="556" font-size="11.5" fill="#5C6238" font-style="italic">retrain the</text>
+        <text x="206" y="574" font-size="11.5" fill="#5C6238" font-style="italic">pricing over time.</text>
+
+        <rect x="44" y="438" width="128" height="128" rx="7" fill="#FBF8F3" stroke="#C89E4D" stroke-width="1.4"/>
+        <text x="108" y="464" text-anchor="middle" font-family="Fraunces,serif" font-size="13.5" font-weight="600" fill="#1F1B16">Your time back</text>
+        <text x="108" y="490" text-anchor="middle" font-size="11.5" fill="#5A5249">Networking</text>
+        <text x="108" y="508" text-anchor="middle" font-size="11.5" fill="#5A5249">On the tools</text>
+        <text x="108" y="526" text-anchor="middle" font-size="11.5" fill="#5A5249">Client lunches</text>
+        <text x="108" y="544" text-anchor="middle" font-size="11.5" fill="#5A5249">Chasing contracts</text>
+        <text x="108" y="562" text-anchor="middle" font-size="11.5" fill="#5A5249">Family</text>
+      </svg>
+      <div class="dia-cap">The aim &middot; agents draft, you review</div>
+    </div>
+
+    <p class="intro">Notice where the orange sits. The agents draft; you and Leah hold every gate that matters. Agent 2 can fire off a quick "what colour hardware?" on its own, because the worst case is a slightly early email. Nothing ever sends a price without your eyes on it first, because a wrong number on a big job is exactly the kind of thing that shouldn't be left to a machine.</p>
+  </section>
+
+  <section class="reveal">
+    <h2><span class="num">03 &middot; How we decide what to build</span>Four questions before any agent.</h2>
+    <p class="intro">Not every job should be an agent. Before we build one, it has to pass four questions. A clear "no" on any of the first three means we don't build it. The fourth decides how much it's allowed to do on its own, which is how your judgement stays protected.</p>
+
+    <div class="gate">
+      <div class="q"><div class="qn">1</div><div><h4>Is the input structured?</h4><p>Can the work start from something consistent, like your quote form or a plan set, not a vague one-line email?</p></div></div>
+      <div class="q"><div class="qn">2</div><div><h4>Are the steps definable?</h4><p>Can we write down what it does, the same way each time? Your pricing is largely fixed formulas, so much of it can.</p></div></div>
+      <div class="q"><div class="qn">3</div><div><h4>Is the output checkable?</h4><p>Can you look at the result and tell quickly whether it's right? With the workings shown, you can.</p></div></div>
+      <div class="q"><div class="qn">4</div><div><h4>What's the cost of a wrong answer?</h4><p>Low and reversible: the agent acts. High or hard to undo: the agent drafts, you commit.</p></div></div>
+    </div>
+    <p class="gate-note">This is why a price never sends on its own. The agent does the legwork; you stay on the trigger.</p>
+  </section>
+
+  <section class="reveal">
+    <h2><span class="num">04 &middot; The path</span>One piece at a time.</h2>
+    <p class="intro">The full picture is six to eight months of work, and it's worth being straight about that up front. But you don't sign up for all of it now. We build one piece, it proves its worth, and you decide on the next. You set the pace, and you can pause between pieces. Each one stands on its own and makes the next one possible.</p>
+
+    <div class="steps">
+      <div class="step first">
+        <div class="step-n">1</div>
+        <div>
+          <div class="step-head"><h3>The first piece</h3><span class="tag">Scoped together</span></div>
+          <p>A small, self-contained proof point that solves one real pain end to end, chosen with you so it's the right one. This is where we start, and it's left open until we've settled it together in the next conversation.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div>
+          <div class="step-head"><h3>The front door</h3></div>
+          <p>The triage and "enough to quote?" gates working across your inbound, so incomplete and not-worth-it jobs are sorted before they reach you, and the gaps get chased automatically. Cleans every input downstream.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <div>
+          <div class="step-head"><h3>The pricing engine</h3></div>
+          <p>Your formulas, glass-spec rules, and cost list turned into an agent that drafts a fully worked quote from structured line items, with the maths shown so you can check it at a glance.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">4</div>
+        <div>
+          <div class="step-head"><h3>The takeoff</h3><span class="tag">The hard one</span></div>
+          <p>The centrepiece: reading a plan set and pulling out each element and its measurements. This is the genuinely difficult part, and the reason we build the rest first, so it has clean inputs to work from. Scoped properly once we're there.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">5</div>
+        <div>
+          <div class="step-head"><h3>ServiceM8 sync and the learning loop</h3></div>
+          <p>Wiring it all into ServiceM8 so drafts land on the job ready for you, and feeding real outcomes (won or lost, actual hours) back in so the pricing sharpens itself over time, the way you already do by hand.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p><strong>Why this order.</strong> The hard, valuable part is the takeoff. Everything before it makes that part possible by giving it clean, structured inputs to work from. Building the front door and the pricing engine first isn't the cautious option, it's the order that makes the whole thing work.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2><span class="num">05 &middot; The first step</span>What we'd start with.</h2>
+    <p class="intro">This is the one piece we'll lock in together. The shape is clear: small, paid, genuinely useful on its own, and the front of everything above. The exact scope comes once you've answered the couple of questions I sent through, so we start on the pain that's actually biggest for you, not the one that's easiest to guess at.</p>
+
+    <div class="placeholder">
+      <div class="ph-label">To be completed together</div>
+      <p>The first proof point, scoped, priced, and written down, once we've settled which one job earns the first build.</p>
+    </div>
+  </section>
+
+  <section class="epilogue reveal">
+    <h2><span class="num">06 &middot; What comes next</span>How this starts.</h2>
+    <p>The next step is a short conversation to settle the first piece. Once I've got a feel for where your volume and your pain actually sit, I'll come back with that first proof point scoped and priced, and we go from there.</p>
+    <p>No big commitment up front. One small thing, proven in your business, and you decide where it goes next.</p>
+    <div class="signoff">
+      <strong>Justin Watts, Workshop AI</strong>
+    </div>
+  </section>
+
+  <footer>
+    <p>Workshop AI &middot; Melbourne &middot; Prepared for Premium Glass &amp; Glazing &middot; June 2026</p>
+  </footer>
+
+</div>
+
+<script>
+  (function(){
+    var els=document.querySelectorAll('.reveal');
+    if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return;}
+    var io=new IntersectionObserver(function(entries){entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:0.1,rootMargin:'0px 0px -6% 0px'});
+    els.forEach(function(e){io.observe(e);});
+  })();
+</script>
+
+</body>
+</html>
