@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+<meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />
+<title>Workshop AI — proposal for Rice Group Construction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+
+  :root{
+    --paper:#F2F4F3;--paper-2:#E7E9E8;--paper-warm:#E9EBEA;
+    --ink:#22333B;--ink-soft:#5A6670;--ink-faint:#8C969D;
+    --accent:#A9927D;--accent-deep:#8A7460;--accent-soft:#D8C9BA;
+    --jet:#22333B;--jet-2:#2C3F49;
+    --muted:#C9CDCB;--line:rgba(34,51,59,0.12);--line-soft:#DDE0DF;
+    --on-dark:#F2F4F3;--on-dark-soft:rgba(242,244,243,0.74);--on-dark-faint:rgba(242,244,243,0.5);
+    --highlight:#E7E2DB;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--paper);color:var(--ink);font-family:"Instrument Sans",sans-serif;font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  .page{max-width:880px;margin:0 auto;padding:0 40px}
+  h1,h2,h3{font-family:"Archivo",sans-serif;font-weight:800;line-height:1.05;letter-spacing:-0.01em}
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent-deep)}
+
+  /* Cover */
+  .cover{background:var(--jet);color:var(--on-dark);padding:96px 0 64px;border-bottom:none;position:relative;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);padding-left:calc(50vw - 50%);padding-right:calc(50vw - 50%)}
+  .cover > *{max-width:800px;margin-left:auto;margin-right:auto}
+  .cover .eyebrow{color:var(--accent);opacity:0;animation:rise .7s ease forwards}
+  .cover h1{color:var(--on-dark);font-size:clamp(38px,6.4vw,66px);font-weight:900;text-transform:uppercase;letter-spacing:-0.01em;margin:22px 0 26px;max-width:15ch;opacity:0;animation:rise .7s ease .08s forwards}
+  .cover h1 em{font-style:normal;color:var(--accent)}
+  .cover .lede{font-size:clamp(18px,2.1vw,21px);color:var(--on-dark-soft);max-width:62ch;opacity:0;animation:rise .7s ease .16s forwards}
+  .cover-meta{margin-top:40px;display:flex;gap:48px;flex-wrap:wrap;font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:0.06em;color:var(--on-dark-faint);opacity:0;animation:rise .7s ease .24s forwards}
+  .cover-meta div{display:flex;flex-direction:column;gap:5px}
+  .cover-meta strong{font-family:"Archivo",sans-serif;color:var(--on-dark);font-weight:700}
+
+  section{padding:64px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:clamp(26px,3.4vw,38px);font-weight:900;text-transform:uppercase;margin-bottom:18px;max-width:24ch}
+  h2 .num{display:flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:500;color:var(--accent-deep);letter-spacing:0.1em;margin-bottom:12px;text-transform:uppercase}
+  h2 .num::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none}
+  .intro{font-size:18px;color:var(--ink-soft);max-width:64ch;margin-bottom:8px}
+  .intro + .intro{margin-top:14px}
+
+  /* Dark band sections */
+  .dark{background:var(--jet);color:var(--on-dark);border-bottom:none;position:relative;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);padding-left:calc(50vw - 50%);padding-right:calc(50vw - 50%)}
+  .dark > *{max-width:800px;margin-left:auto;margin-right:auto}
+  .dark h2{color:var(--on-dark)}
+  .dark h2 .num{color:var(--accent)}
+  .dark .intro{color:var(--on-dark-soft)}
+  .dark .gate-note{color:var(--on-dark-soft)}
+  .dark .q{background:rgba(242,244,243,0.05);border-color:rgba(242,244,243,0.16)}
+  .dark .q .qn{color:var(--accent)}
+  .dark .q h4{color:var(--on-dark)}
+  .dark .q p{color:var(--on-dark-soft)}
+  .dark .epilogue p, .dark.epilogue p{color:var(--on-dark-soft)}
+  .dark .signoff{color:var(--on-dark-soft)}
+  .dark .signoff strong{color:var(--on-dark)}
+  .dark-wrap{background:var(--jet)}
+
+  /* Diagram frame */
+  .dia{margin:36px 0 8px;padding:32px 28px;background:var(--jet);border:1px solid rgba(242,244,243,0.12);border-radius:8px}
+  .dia svg{width:100%;height:auto;display:block;max-width:760px;margin:0 auto}
+  .dia-cap{text-align:center;margin-top:18px;font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--on-dark-faint);letter-spacing:0.08em;text-transform:uppercase}
+
+  /* Scene / pull */
+  .scene{display:grid;grid-template-columns:1fr;gap:0;background:var(--paper-2);border-left:4px solid var(--accent);padding:28px 32px;margin:32px 0;border-radius:4px}
+  .scene .scene-label{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent-deep);margin-bottom:12px;font-weight:500}
+  .scene p{font-family:"Archivo",sans-serif;font-weight:700;font-size:18px;line-height:1.45;color:var(--ink);max-width:none}
+  .scene p + p{margin-top:10px}
+
+  /* Three-col */
+  .three{display:grid;grid-template-columns:1fr;gap:28px;margin-top:32px}
+  @media(min-width:760px){.three{grid-template-columns:repeat(3,1fr);gap:32px}}
+  .three .bar{width:34px;height:3px;background:var(--accent);margin-bottom:14px}
+  .three h3{font-size:18px;font-weight:800;margin-bottom:8px}
+  .three p{font-size:15px;color:var(--ink-soft)}
+
+  /* Gate (four questions) */
+  .gate{display:grid;grid-template-columns:1fr;gap:14px;margin-top:32px}
+  @media(min-width:680px){.gate{grid-template-columns:repeat(2,1fr);gap:16px}}
+  .q{background:var(--paper);border:1px solid var(--line-soft);border-radius:8px;padding:20px 22px;display:grid;grid-template-columns:30px 1fr;gap:14px;align-items:start}
+  .q .qn{font-family:"Archivo",sans-serif;font-size:24px;font-weight:900;color:var(--accent-deep);line-height:1}
+  .q h4{font-family:"Archivo",sans-serif;font-size:16px;font-weight:800;margin-bottom:3px}
+  .q p{font-size:14.5px;color:var(--ink-soft);margin:0}
+  .gate-note{margin-top:18px;font-size:15px;color:var(--ink-soft);font-style:italic;max-width:64ch}
+
+  /* Steps (units of work) */
+  .steps{margin-top:32px;display:grid;grid-template-columns:1fr;gap:0}
+  .step{display:grid;grid-template-columns:46px 1fr;gap:20px;padding:22px 0;border-top:1px solid var(--line)}
+  @media(min-width:720px){.step{grid-template-columns:60px 1fr;gap:28px}}
+  .step:last-child{border-bottom:1px solid var(--line)}
+  .step-n{font-family:"Archivo",sans-serif;font-weight:900;font-size:19px;color:var(--jet);width:46px;height:46px;border:2px solid var(--jet);border-radius:50%;display:flex;align-items:center;justify-content:center}
+  @media(min-width:720px){.step-n{width:60px;height:60px;font-size:24px}}
+  .step.first .step-n{border-color:var(--accent);color:var(--accent-deep);background:rgba(169,146,125,0.12)}
+  .step-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:12px;margin-bottom:6px}
+  .step h3{font-size:clamp(19px,2.3vw,23px);font-weight:800;text-transform:uppercase;letter-spacing:-0.005em}
+  .step .tag{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;padding:4px 9px;color:var(--jet);border:1px solid var(--muted);border-radius:4px}
+  .step.first .tag{color:var(--accent-deep);border-color:var(--accent);background:rgba(169,146,125,0.12)}
+  .step p{font-size:15.5px;color:var(--ink-soft);max-width:62ch}
+
+  /* Scope */
+  .scope{display:grid;grid-template-columns:1fr;gap:28px;margin-top:28px}
+  @media(min-width:680px){.scope{grid-template-columns:1fr 1fr;gap:32px}}
+  .scope-col h4{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;font-weight:500}
+  .scope-col.in h4{color:var(--accent-deep)}
+  .scope-col.out h4{color:var(--ink-faint)}
+  .scope-col ul{list-style:none}
+  .scope-col li{padding:9px 0 9px 22px;font-size:15px;color:var(--ink-soft);border-top:1px solid var(--line-soft);position:relative;line-height:1.5}
+  .scope-col li:last-child{border-bottom:1px solid var(--line-soft)}
+  .scope-col.in li::before{content:"+";position:absolute;left:0;color:var(--accent-deep);font-weight:700}
+  .scope-col.out li::before{content:"\2013";position:absolute;left:0;color:var(--ink-faint)}
+
+  /* Investment */
+  .invest{background:var(--ink);color:var(--paper);padding:40px 44px;border-radius:4px;margin:32px 0}
+  .invest-row{display:grid;grid-template-columns:1fr;gap:28px}
+  @media(min-width:640px){.invest-row{grid-template-columns:1fr 1fr;gap:40px}}
+  .invest-block .invest-label{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent-soft);margin-bottom:12px}
+  .invest-amount{font-family:"Fraunces",serif;font-size:46px;font-weight:500;line-height:1;letter-spacing:-0.02em;margin-bottom:8px}
+  .invest-amount span{font-size:18px;color:var(--accent-soft)}
+  .invest-detail{font-size:14px;color:var(--paper-2);opacity:0.85;max-width:34ch}
+  .invest-divide{height:1px;background:rgba(250,247,242,0.16);margin:4px 0}
+  @media(min-width:640px){.invest-divide{width:1px;height:auto;margin:0}}
+
+  .callout{background:var(--highlight);padding:20px 24px;border-radius:8px;margin:24px 0;border-left:4px solid var(--accent)}
+  .callout p{margin:0;font-size:15px;color:var(--ink-soft);line-height:1.55}
+  .callout strong{color:var(--ink)}
+
+  /* Placeholder (proof point to come) */
+  .placeholder{margin-top:28px;padding:40px 32px;border:1.5px dashed var(--muted);border-radius:8px;background:var(--paper-2);text-align:center}
+  .placeholder .ph-label{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:10px}
+  .placeholder p{font-family:"Archivo",sans-serif;font-weight:700;font-size:17px;color:var(--ink-soft);max-width:54ch;margin:0 auto}
+
+  /* Option cards */
+  .opts{display:grid;grid-template-columns:1fr;gap:20px;margin-top:32px}
+  @media(min-width:720px){.opts{grid-template-columns:1fr 1fr;gap:24px}}
+  .opt{border:1px solid var(--line-soft);border-radius:10px;padding:28px 26px;background:var(--paper)}
+  .opt.feature{border:1.5px solid var(--accent);background:var(--paper-2)}
+  .opt-label{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent-deep);margin-bottom:10px}
+  .opt h3{font-family:"Archivo",sans-serif;font-size:21px;font-weight:800;text-transform:uppercase;letter-spacing:-0.005em;margin-bottom:14px}
+  .opt-price{font-family:"Archivo",sans-serif;font-size:34px;font-weight:900;line-height:1;letter-spacing:-0.01em;color:var(--ink);margin-bottom:14px}
+  .opt-price span{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:500;color:var(--ink-soft);letter-spacing:0.04em}
+  .opt > p{font-size:15px;color:var(--ink-soft);line-height:1.55;margin-bottom:16px;max-width:none}
+  .opt ul{list-style:none;margin:0}
+  .opt li{padding:8px 0 8px 20px;font-size:14.5px;color:var(--ink-soft);border-top:1px solid var(--line-soft);position:relative;line-height:1.5}
+  .opt li:first-child{border-top:none}
+  .opt li::before{content:"+";position:absolute;left:0;color:var(--accent-deep);font-weight:700}
+
+  .epilogue p{font-size:17px;line-height:1.6;color:var(--ink-soft);max-width:62ch;margin-bottom:16px}
+  .signoff{margin-top:40px;font-size:16px;color:var(--ink-soft)}
+  .signoff strong{display:block;font-family:"Archivo",sans-serif;color:var(--ink);font-weight:800;margin-top:4px}
+  footer{background:var(--jet);color:var(--on-dark);padding:40px 0 56px;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);padding-left:calc(50vw - 50%);padding-right:calc(50vw - 50%)}
+  footer > *{max-width:800px;margin-left:auto;margin-right:auto}
+  footer p{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:0.06em;color:var(--on-dark-faint)}
+
+  .reveal{opacity:0;transform:translateY(16px)}
+  .reveal.in{opacity:1;transform:none;transition:opacity .6s ease,transform .6s ease}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .cover .eyebrow,.cover h1,.cover .lede,.cover-meta{transform:translateY(14px)}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important}.reveal{opacity:1;transform:none}.cover .eyebrow,.cover h1,.cover .lede,.cover-meta{transform:none;opacity:1}}
+
+  @media(max-width:640px){
+    .page{padding:0 22px}
+    .cover{padding:60px 0 44px}
+    .invest{padding:30px 26px}
+  }
+  svg text{font-family:"Instrument Sans",sans-serif}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="cover">
+    <div class="eyebrow">Workshop AI &middot; For Sam &middot; Rice Group Construction</div>
+    <h1>Make what you've built <em>hold.</em></h1>
+    <p class="lede">The review mapped every piece of AI work in the business and set the direction. This is the other half: how we'd build it together, in what order, and what it costs. A foundation first, then each piece in turn, every one delivering on its own and compounding toward the single system the review points at.</p>
+    <div class="cover-meta">
+      <div><span>Prepared by</span><strong>Justin Watts</strong></div>
+      <div><span>Date</span><strong>June 2026</strong></div>
+      <div><span>Engagement</span><strong>Monthly retainer</strong></div>
+    </div>
+  </header>
+
+  <section class="reveal">
+    <h2><span class="num">01 &middot; How we work</span>Two units a month, built to fit together.</h2>
+    <p class="intro">The engagement is a monthly retainer of <strong>two units of build capacity a month</strong>. A unit is a defined piece of build work. Some pieces are one unit, some run to two or more, depending on how much is genuinely new. The two ways to take it up, by term and rate, are set out at the end.</p>
+    <p class="intro">Every piece is built against the end state from the start: the same owned data store, the same logged-record pattern, the same shared way in. Each one stands up on its own the day it ships and slots into the whole the day after, with nothing to unpick and rebuild later.</p>
+    <p class="intro">We move as fast as we can to the highest standard we can, and we hold that line on systems that touch your money.</p>
+  </section>
+
+  <section class="reveal">
+    <h2><span class="num">02 &middot; The foundation</span>The first month: getting the ground solid.</h2>
+    <p class="intro">Before any build, the ground it stands on needs to be solid: a shared, agreed understanding across the team of how AI is used, what's off-limits, what data never goes near it, and how the tools are set up and kept. Today that understanding sits with one or two people. The foundation spreads it across the whole team.</p>
+    <p class="intro">This is a facilitated program, the first two units of the engagement. We run the process that produces the policy and gets the team using it. The binding policy itself is drafted and signed off separately. The program covers:</p>
+    <div class="scope">
+      <div class="scope-col in">
+        <h4>What the foundation includes</h4>
+        <ul>
+          <li>A baseline survey of how the team uses AI and how they feel about it, doubling as a tool audit of what's in use and how it could connect.</li>
+          <li>A company-wide guide, built with the team: approved tools, what data never goes in, who's accountable, how shared things are set up and kept. Co-created, so it's followed.</li>
+          <li>The project-setup standard and the rules for where skills live and who can change them.</li>
+          <li>Team training, built to be testable, so absorption is something you can see, not assume.</li>
+          <li>A change process so the guide stays current as tools and rules shift.</li>
+          <li>A closing reassessment, the opening survey re-run, so the shift is visible.</li>
+        </ul>
+      </div>
+      <div class="scope-col out">
+        <h4>What it isn't</h4>
+        <ul>
+          <li>A repeat of the discovery you've already had. That work is done; this builds on it.</li>
+          <li>A document that sits in a drawer. The team shapes it and learns to use it.</li>
+          <li>The binding legal policy itself, which is drafted and signed off separately.</li>
+          <li>A one-off. The change process keeps it alive past week four.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout"><p><strong>Why first.</strong> The foundation is the base every later build sits on, and the fastest win in the whole engagement. It also resolves the two patterns that run through everything the review found: work only one person can run, and good practice that never spreads because there's no shared standard.</p></div>
+  </section>
+
+  <section class="reveal">
+    <h2><span class="num">03 &middot; The sequence</span>What we'd build, in order.</h2>
+    <p class="intro">After the foundation, the work runs roughly in this order. The order isn't locked, it firms up as we learn, and each piece earns its place. Unit counts are indicative: they tell you the shape of the work, not a fixed quote.</p>
+
+    <div class="steps">
+      <div class="step first">
+        <div class="step-n">1</div>
+        <div>
+          <div class="step-head"><h3>The foundation</h3><span class="tag">2 units &middot; month one</span></div>
+          <p>The governance program above. Survey, the team-wide guide, tool mapping, training, the change process, and a closing reassessment.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <div>
+          <div class="step-head"><h3>The project index</h3><span class="tag">~1 unit</span></div>
+          <p>A self-maintaining index for the project documents, built into the project-setup standard so every project inherits it. High reach, used daily, and a strong early win.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <div>
+          <div class="step-head"><h3>The daily reconciliation check</h3><span class="tag">~2 units</span></div>
+          <p>Rebuilt as a bounded check with its own logged history, putting the financial safety net back in place and setting the pattern, owned store, logged record, exceptions to a person, that the later builds reuse.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">4</div>
+        <div>
+          <div class="step-head"><h3>The month-end review</h3><span class="tag">~1 unit</span></div>
+          <p>Built as an extension of the daily check rather than a separate system. Its running record makes month-end fast.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">5</div>
+        <div>
+          <div class="step-head"><h3>The invoice pipeline</h3><span class="tag">~4&ndash;6 units</span></div>
+          <p>Invoice routing that places invoices and learns from corrections; the approval app migrated off Lovable onto infrastructure you own with a corrections log; and the two joined into one flow, with a single clean-pass measure across the whole pipeline.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-n">6</div>
+        <div>
+          <div class="step-head"><h3>Watch and shift</h3><span class="tag">ongoing</span></div>
+          <p>Bob's jobs move to native tooling as the cloud-scheduling and messaging pieces mature. The larger system assembles from these components over time, rather than as one large release.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2><span class="num">04 &middot; Time and cost</span>What it adds up to.</h2>
+    <p class="intro">At two units a month, the work above breaks down like this. We'd ask for a six-month minimum term, because that's the runway the build genuinely needs and it lets each piece compound on the last.</p>
+    <div class="scope">
+      <div class="scope-col in">
+        <h4>Best case</h4>
+        <ul>
+          <li>Twelve units, delivered over six months.</li>
+          <li>The full scoped sequence, foundation through the invoice pipeline.</li>
+          <li>The minimum term and the fastest the work could land.</li>
+        </ul>
+      </div>
+      <div class="scope-col out">
+        <h4>Realistic ceiling</h4>
+        <ul>
+          <li>Up to eighteen units, around nine months, billed at the same monthly rate as the work continues.</li>
+          <li>Several builds are first-of-their-kind here, in a multi-entity business with real data complexity.</li>
+          <li>We work to the faster end, and review pace with you every month.</li>
+          <li>You're never committed past the six-month minimum.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout"><p><strong>Plainly.</strong> Best case is six months. Based on what we know today, it could run to around nine. We'll move as quickly as we can without cutting corners on systems that touch your money, and you'll see the pace every month rather than at the end.</p></div>
+  </section>
+
+  <section class="reveal">
+    <h2><span class="num">05 &middot; Ways to work together</span>Two ways in.</h2>
+    <p class="intro">Both run at two units a month. The difference is term and commitment. The six-month is the scoped work above. The twelve-month makes us your standing build team, the scoped work first, then the capacity to take on the second horizon: the larger system, the data you're sitting on, and whatever new needs surface as we go.</p>
+
+    <div class="opts">
+      <div class="opt">
+        <div class="opt-label">Option A</div>
+        <h3>Six-month build</h3>
+        <div class="opt-price">$3,600 <span>+ GST / month</span></div>
+        <p>The work mapped above, at two units a month, over a six-month minimum term. The build continues at the same rate until it's done, then renews if it's going well.</p>
+        <ul>
+          <li>Two units of build capacity each month</li>
+          <li>Six-month minimum term, monthly thereafter</li>
+          <li>The scoped sequence, foundation through the invoice pipeline</li>
+        </ul>
+      </div>
+      <div class="opt feature">
+        <div class="opt-label">Option B</div>
+        <h3>Twelve-month partnership</h3>
+        <div class="opt-price">$3,400 <span>+ GST / month</span></div>
+        <p>The same two units a month, over twelve months, at a lower monthly rate. The scoped work first, then continued capacity for the second horizon. Reviewed every month, so the time is always spent on something worth building.</p>
+        <ul>
+          <li>Two units of build capacity each month</li>
+          <li>A fixed monthly rate across the full twelve months</li>
+          <li>Scoped work, then the larger system and the second-horizon opportunities</li>
+          <li>Monthly review of where the capacity goes</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout"><p><strong>On the twelve-month.</strong> The back half is capacity for work we haven't scoped yet, the end-state system, the data in the agricultural arm, the ideas you've not had time to chase. We review every month where that capacity goes, so it stays pointed at real value. If there were ever nothing worth building, we'd tell you.</p></div>
+  </section>
+
+  <section class="dark reveal epilogue">
+    <h2><span class="num">06 &middot; The next step</span>From map to build.</h2>
+    <p>The review laid out the whole picture. This is the path through it: a foundation that makes what you've built hold, then each piece in turn, built to fit together, on a timeline we keep honest as we go.</p>
+    <p>If the shape's right, we agree a start date, run the foundation, and begin.</p>
+    <div class="signoff">Looking forward to building it with you.
+      <strong>Justin Watts &middot; Workshop AI</strong>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>Workshop AI &middot; Prepared for Rice Group Construction &middot; June 2026 &middot; Pricing in AUD, ex GST</p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }});
+  },{threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+
+</body>
+</html>
