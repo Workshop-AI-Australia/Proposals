@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>html{color-scheme:light}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>PB Sons Business Board</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one scrolling dashboard, sections numbered to match the PB Sons proposal so each item can be linked by #part-n */
+:root{
+  --bg:#F4F3EF; --surface:#FFFFFF; --ink:#1C2430; --ink-2:#3E4752; --muted:#5B6470;
+  --line:#E2E1DC; --line-soft:#ECEBE6; --head-bg:#F7F7F5;
+  --accent:#1F5FA8; --accent-soft:#EEF4FB; --accent-line:#C9D6E6;
+  --track:#E6E8EB; --mat:#C46A1A;
+  --ok:#2E7D4F; --ok-bg:#E8F3EC; --warn:#975A00; --warn-bg:#FBF1E1; --bad:#B42318; --bad-bg:#FBEAE8; --idle:#5B6470; --idle-bg:#EEF0F2;
+  --banner-bg:#1C2430; --banner-fg:#FFFFFF; --badge-bg:#1C2430; --badge-fg:#FFFFFF; --chip-bg:#EEF0F2;
+  --panel:#F7F9FC; --panel-line:#DCE5F0;
+  --font-display:"Barlow Semi Condensed", "Arial Narrow", Inter, system-ui, sans-serif;
+  --font-body:Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12171D; --surface:#1A2129; --ink:#E7EAEE; --ink-2:#C3CAD2; --muted:#A3ACB6;
+    --line:#2A333D; --line-soft:#242C35; --head-bg:#1F2730;
+    --accent:#7FB0EE; --accent-soft:#1E2C3D; --accent-line:#34506F;
+    --track:#2E3842; --mat:#E39A55;
+    --ok:#6CC08E; --ok-bg:#18301F; --warn:#E2B15A; --warn-bg:#33270F; --bad:#F08A80; --bad-bg:#3A1A17; --idle:#A3ACB6; --idle-bg:#252D36;
+    --banner-bg:#0B0F13; --banner-fg:#E7EAEE; --badge-bg:#E7EAEE; --badge-fg:#12171D; --chip-bg:#252D36;
+    --panel:#161D25; --panel-line:#2A3A4D;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12171D; --surface:#1A2129; --ink:#E7EAEE; --ink-2:#C3CAD2; --muted:#A3ACB6;
+  --line:#2A333D; --line-soft:#242C35; --head-bg:#1F2730;
+  --accent:#7FB0EE; --accent-soft:#1E2C3D; --accent-line:#34506F;
+  --track:#2E3842; --mat:#E39A55;
+  --ok:#6CC08E; --ok-bg:#18301F; --warn:#E2B15A; --warn-bg:#33270F; --bad:#F08A80; --bad-bg:#3A1A17; --idle:#A3ACB6; --idle-bg:#252D36;
+  --banner-bg:#0B0F13; --banner-fg:#E7EAEE; --badge-bg:#E7EAEE; --badge-fg:#12171D; --chip-bg:#252D36;
+  --panel:#161D25; --panel-line:#2A3A4D;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.5;font-variant-numeric:tabular-nums}
+a{color:var(--accent)}
+h1,h2,h3{font-family:var(--font-display);font-weight:700;margin:0;text-wrap:balance}
+p{margin:0}
+.banner{background:var(--banner-bg);color:var(--banner-fg);font-size:14px;font-weight:500;text-align:center;padding-block:10px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.wrap{max-width:1360px;margin:0 auto;padding-block:28px 56px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));display:flex;flex-direction:column;gap:24px}
+.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px}
+.kicker{font-size:13px;font-weight:600;letter-spacing:.08em;color:var(--muted)}
+h1{font-size:clamp(34px,5vw,44px);line-height:1.05;margin-top:4px}
+.updated{font-size:14px;color:var(--muted)}
+.jump{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.jump span{font-size:13px;color:var(--muted);margin-right:4px}
+.jump a{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:14px;font-weight:500}
+.jump a:hover{border-color:var(--accent)}
+.jump a:focus-visible,.rowbtn:focus-visible,.actbtn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.jump b{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--badge-bg);color:var(--badge-fg);font-size:12px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.tile .l{font-size:13px;color:var(--muted);font-weight:500}
+.tile .v{font-family:var(--font-display);font-weight:700;font-size:32px;margin-top:4px}
+.tile .s{font-size:13px;color:var(--muted)}
+.v.bad{color:var(--bad)} .v.warn{color:var(--warn)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,560px),1fr));gap:24px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:24px;scroll-margin-top:16px;min-width:0}
+.card:target{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.head{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+.head-l{display:flex;gap:12px;align-items:flex-start;min-width:0}
+.badge{flex:none;width:32px;height:32px;border-radius:50%;background:var(--badge-bg);color:var(--badge-fg);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px}
+h2{font-size:26px;line-height:1.15}
+.what{margin-top:4px;font-size:15px;color:var(--muted);max-width:68ch}
+.item{margin-top:6px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chips .lab{font-size:12px;color:var(--muted)}
+.chip{font-size:12px;font-weight:600;color:var(--ink);background:var(--chip-bg);border-radius:999px;padding:4px 10px}
+.chip.start{background:var(--accent);color:var(--surface)}
+.scroll{overflow-x:auto}
+.thead,.trow{display:grid;gap:12px;align-items:center}
+.thead{padding:8px 0;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.04em;border-bottom:1px solid var(--line-soft);text-transform:uppercase}
+.trow{padding:10px 0;font-size:14px;border-bottom:1px solid var(--line-soft)}
+.prices .thead,.prices .trow{grid-template-columns:minmax(190px,2.4fr) repeat(5,minmax(72px,1fr));min-width:620px}
+.up{color:var(--bad);font-weight:600} .down{color:var(--ok);font-weight:600}
+.dim{color:var(--muted)}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;font-size:14px}
+.note{font-size:13px;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:8px;padding:4px 10px;border-radius:999px;font-size:13px;font-weight:600;white-space:nowrap}
+.pill.ok{background:var(--ok-bg);color:var(--ok)} .pill.watch{background:var(--warn-bg);color:var(--warn)} .pill.act{background:var(--bad-bg);color:var(--bad)} .pill.idle{background:var(--idle-bg);color:var(--idle)}
+.dot{display:inline-block;flex:none;width:10px;height:10px;box-sizing:border-box}
+.pill.ok .dot{border-radius:50%;background:var(--ok)}
+.pill.watch .dot{width:9px;height:9px;transform:rotate(45deg);border-radius:1px;background:var(--warn)}
+.pill.act .dot{border-radius:1px;background:var(--bad)}
+.pill.idle .dot{border-radius:50%;border:2px solid var(--idle)}
+.jobs{border:1px solid var(--line-soft);border-radius:10px}
+.jobs .thead,.rowbtn{grid-template-columns:minmax(190px,2fr) minmax(170px,1.4fr) minmax(100px,.9fr) minmax(190px,1.6fr) minmax(90px,.8fr) minmax(240px,2.1fr);min-width:1040px;padding-left:16px;padding-right:16px}
+.jobs .thead{background:var(--head-bg);border-radius:10px 10px 0 0}
+.rowbtn{display:grid;gap:16px;align-items:center;width:100%;text-align:left;padding-block:14px;border:0;border-top:1px solid var(--line-soft);background:var(--surface);color:var(--ink);cursor:pointer;font:inherit}
+.rowbtn:hover{background:var(--accent-soft)}
+.rowbtn[aria-pressed="true"]{background:var(--accent-soft)}
+.jn{font-weight:600;font-size:15px} .js{font-size:13px;color:var(--muted)}
+.bar{height:10px;background:var(--track);border-radius:999px;overflow:hidden}
+.bar.thin{height:8px}
+.fill{height:100%;border-radius:999px;background:var(--accent)}
+.fill.mat{background:var(--mat)} .fill.bad{background:var(--bad)}
+.barlab{font-size:13px;color:var(--muted);margin-top:6px}
+.owed{font-weight:600;color:var(--bad)}
+.reason{font-size:13px;color:var(--ink-2);margin-top:6px}
+.detail{margin-top:20px;background:var(--panel);border:1px solid var(--panel-line);border-radius:10px;padding:20px}
+.detail-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:16px}
+.detail-h h3{font-family:var(--font-body);font-size:18px}
+.dcols{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px}
+.dlab{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.04em;margin-bottom:8px;text-transform:uppercase}
+.kv{display:flex;justify-content:space-between;gap:12px;font-size:14px;padding:4px 0}
+.kv span:first-child{color:var(--muted)}
+.claim{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--panel-line);font-size:14px}
+.cpaid{color:var(--ok);font-weight:600;font-size:13px;white-space:nowrap}
+.cwatch{color:var(--warn);font-weight:600;font-size:13px;white-space:nowrap}
+.cact{color:var(--bad);font-weight:600;font-size:13px;white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:20px;font-size:13px;color:var(--ink-2);margin-bottom:10px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:14px;height:8px;border-radius:4px;background:var(--accent)} .sw.mat{background:var(--mat)}
+.spend{padding:10px 0;border-bottom:1px solid var(--line-soft)}
+.spend-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;font-size:14px;font-weight:600}
+.spend-h small{font-weight:400;color:var(--muted);font-size:14px}
+.spend-b{display:grid;grid-template-columns:1fr 44px;gap:8px;align-items:center;font-size:13px}
+.spend-b div:nth-child(even){text-align:right}
+.list .trow{grid-template-columns:minmax(150px,1.5fr) minmax(120px,2fr) auto}
+.ret .trow{grid-template-columns:minmax(170px,1.6fr) minmax(80px,.7fr) minmax(150px,1.5fr) auto}
+.quo .trow{grid-template-columns:minmax(170px,1.8fr) minmax(90px,.8fr) minmax(90px,.8fr) auto}
+.bld .trow{grid-template-columns:minmax(170px,1.3fr) minmax(170px,1.7fr) auto}
+.strong{font-weight:600}
+.big{font-weight:700;font-size:15px}
+.wq{color:var(--warn);font-weight:600;font-size:13px}
+.actbtn{min-height:44px;padding:0 14px;border-radius:8px;border:1px solid var(--accent-line);background:var(--accent-soft);color:var(--accent);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:14px}
+.stat{background:var(--head-bg);border-radius:10px;padding:12px 14px}
+.stat .l{font-size:12px;color:var(--muted);font-weight:500}
+.stat .v{font-family:var(--font-display);font-weight:700;font-size:28px}
+.stat .v.acc{color:var(--accent)}
+.conns{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.conn{border:1px solid var(--line-soft);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;background:var(--head-bg)}
+.conn h3{font-family:var(--font-body);font-size:16px}
+.conn p{font-size:14px;color:var(--ink-2)}
+.conn .pill{align-self:flex-start}
+.cmp .thead,.cmp .trow{grid-template-columns:minmax(170px,2fr) repeat(3,minmax(80px,1fr));min-width:460px}
+@media (max-width:640px){
+  .list .trow,.ret .trow,.quo .trow,.bld .trow{grid-template-columns:minmax(0,1fr);gap:6px}
+  .list .trow .pill,.ret .trow .pill{justify-self:start}
+  .actbtn{justify-self:start}
+}
+footer.f{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+@media (max-width:520px){.stats{grid-template-columns:1fr}.card{padding:18px}}
+</style>
+</head>
+<body>
+
+
+<div class="banner">Mock-up with sample figures. Nothing on this page is real PB Sons data.</div>
+
+<div class="wrap">
+
+<header class="top">
+  <div>
+    <div class="kicker">PB SONS PLUMBING</div>
+    <h1>Business board</h1>
+  </div>
+  <div class="updated">Updated Wed 11 Nov 2026, 7:00 am · from Xero and email</div>
+</header>
+
+<nav class="jump" aria-label="Jump to a numbered item">
+  <span>Jump to</span>
+  <a href="#part-1"><b>1</b>Supplier prices</a>
+  <a href="#part-2"><b>2</b>Live jobs</a>
+  <a href="#part-3"><b>3</b>Claims against spend</a>
+  <a href="#part-5"><b>5</b>Retention</a>
+  <a href="#part-6"><b>6</b>Quotes</a>
+</nav>
+
+<div class="tiles">
+  <div class="tile"><div class="l">Live jobs</div><div class="v">6</div><div class="s">1 not started yet</div></div>
+  <div class="tile"><div class="l">Work on the books</div><div class="v">$1,127,000</div><div class="s">Contracts plus approved extras</div></div>
+  <div class="tile"><div class="l">Claimed so far</div><div class="v">$566,100</div><div class="s">50% of the work on the books</div></div>
+  <div class="tile"><div class="l">Owed to you</div><div class="v bad">$71,000</div><div class="s">2 claims, 1 over 60 days</div></div>
+  <div class="tile"><div class="l">Retention due back</div><div class="v warn">$14,600</div><div class="s">2 finished jobs, see 5</div></div>
+</div>
+
+<section class="card" id="part-1">
+  <div class="head">
+    <div class="head-l"><span class="badge" aria-label="Item 1">1</span>
+      <div><h2>Supplier prices</h2>
+        <p class="what">What you're paying now against the prices in your plumbing package, sorted by how much money each one affects. You update the package; this list keeps track.</p>
+      </div>
+    </div>
+    <div class="chips"><span class="lab">Uses</span><span class="chip">Supplier invoices</span><span class="chip">Plumbing package</span></div>
+  </div>
+  <div class="scroll prices">
+    <div class="thead"><div>Item</div><div>Package</div><div>Paid</div><div>Change</div><div>Bought</div><div>Extra cost</div></div>
+    <div class="trow"><div class="strong">PVC DWV pipe 100 mm (per m)</div><div class="dim">$9.80</div><div>$12.90</div><div class="up">+32%</div><div class="dim">420 m</div><div class="up">+$1,302</div></div>
+    <div class="trow"><div class="strong">PVC sewer pipe 150 mm SN8 (per m)</div><div class="dim">$24.50</div><div>$31.20</div><div class="up">+27%</div><div class="dim">180 m</div><div class="up">+$1,206</div></div>
+    <div class="trow"><div class="strong">Copper tube 20 mm type B (per m)</div><div class="dim">$18.40</div><div>$21.10</div><div class="up">+15%</div><div class="dim">260 m</div><div class="up">+$702</div></div>
+    <div class="trow"><div class="strong">PE-X pipe 25 mm (per m)</div><div class="dim">$4.10</div><div>$5.30</div><div class="up">+29%</div><div class="dim">300 m</div><div class="up">+$360</div></div>
+    <div class="trow"><div class="strong">PVC bend 100 mm 88° (each)</div><div class="dim">$6.20</div><div>$7.90</div><div class="up">+27%</div><div class="dim">140</div><div class="up">+$238</div></div>
+    <div class="trow"><div class="strong">Gas ball valve DN20 (each)</div><div class="dim">$38.00</div><div>$36.50</div><div class="down">&minus;4%</div><div class="dim">24</div><div class="down">&minus;$36</div></div>
+  </div>
+  <div class="foot">
+    <div>Last 6 months on these items: <span class="up">+$3,772</span> more than your package allows</div>
+    <div class="note">3 items couldn't be matched. Check them.</div>
+  </div>
+</section>
+
+<section class="card" id="part-2">
+  <div class="head">
+    <div class="head-l"><span class="badge" aria-label="Item 2">2</span>
+      <div><h2>Live jobs</h2>
+        <p class="what">Where each job is up to, what's been claimed, what's owed, and anything that needs a look. Tap a job for the detail.</p>
+      </div>
+    </div>
+    <div class="chips"><span class="lab">Uses</span><span class="chip">Xero (read-only)</span><span class="chip">Your job list</span></div>
+  </div>
+  <div class="scroll jobs">
+    <div class="thead"><div>Job</div><div>Builder</div><div>Value</div><div>Claimed</div><div>Owed</div><div>Status</div></div>
+    <div id="jobRows"></div>
+  </div>
+  <div class="detail" id="jobDetail" aria-live="polite"></div>
+</section>
+
+<div class="grid2">
+
+<section class="card" id="part-2-payers">
+  <div class="head">
+    <div class="head-l"><span class="badge" aria-label="Item 2">2</span>
+      <div><h2>Slow payers</h2>
+        <p class="what">How long each builder takes to pay, and whether it's getting longer.</p>
+      </div>
+    </div>
+    <div class="chips"><span class="lab">Uses</span><span class="chip">Xero (read-only)</span></div>
+  </div>
+  <div class="list">
+    <div class="trow"><div class="strong">Skeleton Creek Projects</div><div><div class="bar thin"><div class="fill bad" style="width:93%"></div></div><div class="barlab">56 days now, was 31 days</div></div><span class="pill act"><span class="dot"></span>Slowing</span></div>
+    <div class="trow"><div class="strong">Cherry Lake Constructions</div><div><div class="bar thin"><div class="fill" style="width:52%"></div></div><div class="barlab">31 days now, was 30 days</div></div><span class="pill ok"><span class="dot"></span>Steady</span></div>
+    <div class="trow"><div class="strong">Kororoit Build</div><div><div class="bar thin"><div class="fill" style="width:42%"></div></div><div class="barlab">25 days now, was 26 days</div></div><span class="pill ok"><span class="dot"></span>Steady</span></div>
+    <div class="trow"><div class="strong">Merri Projects</div><div><div class="bar thin"><div class="fill" style="width:35%"></div></div><div class="barlab">21 days, first jobs this year</div></div><span class="pill idle"><span class="dot"></span>New this year</span></div>
+  </div>
+  <p class="note" style="margin-top:12px">Average days from claim sent to money in the bank, last 6 months.</p>
+</section>
+
+<section class="card" id="part-3">
+  <div class="head">
+    <div class="head-l"><span class="badge" aria-label="Item 3">3</span>
+      <div><h2>Claims against spend</h2>
+        <p class="what">How much of each job you've claimed, against how much of its materials you've already paid for.</p>
+      </div>
+    </div>
+    <div class="chips"><span class="lab">Uses</span><span class="chip">Xero (read-only)</span><span class="chip">Quote breakdowns</span></div>
+  </div>
+  <div class="legend"><span><span class="sw"></span>Job claimed</span><span><span class="sw mat"></span>Materials allowance spent</span></div>
+  <div id="spendRows"></div>
+  <p class="note" style="margin-top:12px">Flags a job when materials spent run more than 15 points ahead of what's been claimed.</p>
+</section>
+
+</div>
+
+
+<div class="grid2">
+
+<section class="card" id="part-5">
+  <div class="head">
+    <div class="head-l"><span class="badge" aria-label="Item 5">5</span>
+      <div><h2>Retention due back</h2>
+        <p class="what">Money builders are holding on finished jobs, and when you can ask for it back.</p>
+      </div>
+    </div>
+    <div class="chips"><span class="lab">Uses</span><span class="chip">Xero</span><span class="chip">Email</span></div>
+  </div>
+  <div class="ret">
+    <div class="trow"><div><div class="strong">Aged care wing, Sunshine</div><div class="js">Cherry Lake Constructions</div></div><div class="big">$9,800</div><div class="reason" style="margin:0">Finished Oct 2025. Defects period ended Oct 2026.</div><span class="pill watch"><span class="dot"></span>Due now</span></div>
+    <div class="trow"><div><div class="strong">Shop fit-outs, Hoppers Crossing</div><div class="js">Kororoit Build</div></div><div class="big">$4,800</div><div class="reason" style="margin:0">Finished Aug 2025. Defects period ended Aug 2026.</div><span class="pill watch"><span class="dot"></span>Due now</span></div>
+    <div class="trow"><div><div class="strong">8 townhouses, Altona Meadows</div><div class="js">Skeleton Creek Projects</div></div><div class="big">$6,200</div><div class="reason" style="margin:0">Finished May 2026. Defects period ends May 2027.</div><span class="pill idle"><span class="dot"></span>Due May 2027</span></div>
+  </div>
+  <div class="foot"><div>Due back now: <span class="strong" style="color:var(--warn)">$14,600</span></div><div class="note">Only applies where your contract holds retention.</div></div>
+</section>
+
+<section class="card" id="part-6">
+  <div class="head">
+    <div class="head-l"><span class="badge" aria-label="Item 6">6</span>
+      <div><h2>Quotes gone quiet</h2>
+        <p class="what">Quotes with no answer after two weeks, and how many quotes turn into jobs.</p>
+      </div>
+    </div>
+    <div class="chips"><span class="lab">Uses</span><span class="chip">Email</span><span class="chip">Xero</span></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="l">Quotes sent, 12 months</div><div class="v">26</div></div>
+    <div class="stat"><div class="l">Won</div><div class="v">7</div></div>
+    <div class="stat"><div class="l">Win rate</div><div class="v acc">27%</div></div>
+  </div>
+  <div class="quo">
+    <div class="trow"><div><div class="strong">16 townhouses, Wyndham Vale</div><div class="js">Saltwater Developments · sent 2 Oct</div></div><div class="strong">$212,000</div><div class="wq">40 days, no reply</div><button class="actbtn" type="button">Review follow-up</button></div>
+    <div class="trow"><div><div class="strong">Factory amenities, Truganina</div><div class="js">Laverton Build Co · sent 14 Oct</div></div><div class="strong">$88,500</div><div class="wq">28 days, no reply</div><button class="actbtn" type="button">Review follow-up</button></div>
+    <div class="trow"><div><div class="strong">Café and offices, Footscray</div><div class="js">Merri Projects · sent 21 Oct</div></div><div class="strong">$46,200</div><div class="wq">21 days, no reply</div><button class="actbtn" type="button">Review follow-up</button></div>
+  </div>
+  <p class="note" style="margin-top:12px">A quote counts as won when Xero shows an invoice to that builder for that site.</p>
+</section>
+
+</div>
+
+
+
+<footer class="f">
+  <div>Read-only connections to Xero and email. Nothing is changed or sent without your say-so.</div>
+  <div>Mock-up prepared by Workshop AI</div>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var money=function(n){return '$'+Math.round(n).toLocaleString('en-AU');};
+  var LABEL={ok:'On track',watch:'Watch',act:'Act now',idle:'Not started'};
+  var jobs=[
+    {id:'A',name:'Medical centre',suburb:'Altona North',builder:'Cherry Lake Constructions',contract:180000,extras:6400,extrasCount:2,status:'watch',reason:'Claim 3 unpaid for 38 days',matSpent:52300,matAllow:78000,next:'Chase claim 3 with Cherry Lake accounts this week.',
+      claims:[{n:'Claim 1',a:36000,paid:true,note:'Paid in 29 days'},{n:'Claim 2',a:48900,paid:true,note:'Paid in 28 days'},{n:'Claim 3',a:23200,paid:false,days:38,note:'Unpaid, 38 days'}]},
+    {id:'B',name:'Childcare centre',suburb:'Tarneit',builder:'Kororoit Build',contract:236000,extras:6000,extrasCount:1,status:'watch',reason:'Spent 83% of materials, claimed 30%',matSpent:81400,matAllow:98000,next:'Bring claim 2 forward. Fixtures were bought early, so you are carrying the cost.',
+      claims:[{n:'Claim 1',a:72600,paid:true,note:'Paid in 25 days'}]},
+    {id:'C',name:'12 townhouses',suburb:'Point Cook',builder:'Skeleton Creek Projects',contract:310000,extras:8500,extrasCount:3,status:'act',reason:'Claim 4 unpaid for 64 days. This builder is paying slower each month.',matSpent:121000,matAllow:140000,next:'Call Skeleton Creek about claim 4. Payments have slowed three claims running.',
+      claims:[{n:'Claim 1',a:80000,paid:true,note:'Paid in 34 days'},{n:'Claim 2',a:70000,paid:true,note:'Paid in 49 days'},{n:'Claim 3',a:57000,paid:true,note:'Paid in 55 days'},{n:'Claim 4',a:47800,paid:false,days:64,note:'Unpaid, 64 days'}]},
+    {id:'D',name:'Warehouse amenities',suburb:'Laverton North',builder:'Cherry Lake Constructions',contract:91000,extras:3200,extrasCount:1,status:'ok',reason:'Ready for final claim at handover',matSpent:31800,matAllow:34000,next:'Send the final claim ($4,700) at handover. The retention clock starts then.',
+      claims:[{n:'Claim 1',a:45000,paid:true,note:'Paid in 30 days'},{n:'Claim 2',a:44500,paid:true,note:'Paid in 31 days'}]},
+    {id:'E',name:'Supermarket fit-out',suburb:'Werribee',builder:'Merri Projects',contract:157900,extras:0,extrasCount:0,status:'ok',reason:'Claims in step with spend, paid in 21 days',matSpent:18700,matAllow:66000,next:'Claim 2 due at the end of November.',
+      claims:[{n:'Claim 1',a:41100,paid:true,note:'Paid in 21 days'}]},
+    {id:'F',name:'Sports clubrooms',suburb:'Laverton',builder:'Kororoit Build',contract:128000,extras:0,extrasCount:0,status:'idle',reason:'Starts February 2027',matSpent:0,matAllow:52000,next:'Order long-lead fixtures by mid-January.',claims:[]}
+  ];
+  jobs.forEach(function(j){
+    j.value=j.contract+j.extras;
+    j.claimed=j.claims.reduce(function(s,c){return s+c.a;},0);
+    j.paid=j.claims.filter(function(c){return c.paid;}).reduce(function(s,c){return s+c.a;},0);
+    j.owed=j.claimed-j.paid;
+    j.pct=Math.round(j.claimed/j.value*100);
+    j.matPct=Math.round(j.matSpent/j.matAllow*100);
+  });
+  var picked='A';
+  var pill=function(k,label){return '<span class="pill '+k+'"><span class="dot"></span>'+(label||LABEL[k])+'</span>';};
+
+  function renderRows(){
+    var html=jobs.map(function(j){
+      return '<button type="button" class="rowbtn" data-id="'+j.id+'" aria-pressed="'+(j.id===picked)+'">'+
+        '<div><div class="jn">'+j.name+'</div><div class="js">'+j.suburb+'</div></div>'+
+        '<div>'+j.builder+'</div>'+
+        '<div class="strong">'+money(j.value)+'</div>'+
+        '<div><div class="bar"><div class="fill" style="width:'+j.pct+'%"></div></div><div class="barlab">'+j.pct+'% claimed · '+money(j.claimed)+'</div></div>'+
+        '<div class="'+(j.owed>0?'owed':'dim')+'">'+(j.owed>0?money(j.owed):'Nil')+'</div>'+
+        '<div>'+pill(j.status)+'<div class="reason">'+j.reason+'</div></div>'+
+      '</button>';
+    }).join('');
+    document.getElementById('jobRows').innerHTML=html;
+  }
+  function renderDetail(){
+    var j=jobs.filter(function(x){return x.id===picked;})[0];
+    var claims=j.claims.length?j.claims.map(function(c){
+      var cls=c.paid?'cpaid':(c.days>45?'cact':'cwatch');
+      return '<div class="claim"><div><span class="strong">'+c.n+'</span> · '+money(c.a)+'</div><div class="'+cls+'">'+c.note+'</div></div>';
+    }).join(''):'<p class="dim">No claims yet. Job hasn\'t started.</p>';
+    document.getElementById('jobDetail').innerHTML=
+      '<div class="detail-h"><h3>'+j.name+', '+j.suburb+'</h3>'+pill(j.status)+'</div>'+
+      '<div class="dcols">'+
+        '<div><div class="dlab">Progress claims</div>'+claims+'</div>'+
+        '<div><div class="dlab">The job</div>'+
+          '<div class="kv"><span>Builder</span><span>'+j.builder+'</span></div>'+
+          '<div class="kv"><span>Contract</span><span>'+money(j.contract)+'</span></div>'+
+          '<div class="kv"><span>Extras</span><span>'+(j.extras>0?money(j.extras)+' ('+j.extrasCount+' approved)':'None yet')+'</span></div>'+
+          '<div class="kv"><span>Total</span><span class="big">'+money(j.value)+'</span></div>'+
+          '<div class="barlab" style="margin:10px 0 6px">Materials: '+money(j.matSpent)+' of '+money(j.matAllow)+' allowance</div>'+
+          '<div class="bar"><div class="fill mat" style="width:'+j.matPct+'%"></div></div>'+
+          '<div class="barlab">'+j.matPct+'% of the materials allowance spent, '+j.pct+'% of the job claimed</div>'+
+        '</div>'+
+        '<div><div class="dlab">Next step</div><p style="font-size:15px">'+j.next+'</p><p class="note" style="margin-top:12px">Claims and payments from Xero. Materials allowance from your quote.</p></div>'+
+      '</div>';
+  }
+  function renderSpend(){
+    document.getElementById('spendRows').innerHTML=jobs.filter(function(j){return j.status!=='idle';}).map(function(j){
+      var flag=(j.matPct-j.pct)>15;
+      return '<div class="spend"><div class="spend-h"><div>'+j.name+' <small>· '+j.suburb+'</small></div>'+(flag?pill('watch','Claim behind spend'):pill('ok','In step'))+'</div>'+
+        '<div class="spend-b"><div class="bar thin"><div class="fill" style="width:'+j.pct+'%"></div></div><div>'+j.pct+'%</div>'+
+        '<div class="bar thin"><div class="fill mat" style="width:'+j.matPct+'%"></div></div><div>'+j.matPct+'%</div></div></div>';
+    }).join('');
+  }
+  document.getElementById('jobRows').addEventListener('click',function(e){
+    var b=e.target.closest('.rowbtn'); if(!b) return;
+    picked=b.getAttribute('data-id'); renderRows(); renderDetail();
+  });
+  renderRows(); renderDetail(); renderSpend();
+
+  var reduce=false; try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){}
+  function goToHash(){
+    var id=(location.hash||'').slice(1); if(!id) return;
+    var el=document.getElementById(id); if(el) el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
+  }
+  window.addEventListener('hashchange',goToHash);
+  if(location.hash) setTimeout(goToHash,60);
+})();
+</script>
+
+</body>
+</html>
